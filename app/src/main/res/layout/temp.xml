@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="#81B388FF">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="Tạo Hồ Sơ"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
+
+        <EditText
+            android:id="@+id/editName"
+            android:hint="Tên của bạn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@drawable/bg_edittext"/>
+
+        <!-- Thêm tuổi -->
+        <TextView
+            android:text="Năm sinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spinnerYearOfBirth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_edittext"
+            android:padding="12dp"
+            android:layout_marginTop="4dp"/>
+
+        <EditText
+            android:id="@+id/editBio"
+            android:hint="Giới thiệu bản thân"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_edittext"/>
+
+        <RadioGroup
+            android:id="@+id/radioGender"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:text="Nam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:text="Nữ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"/>
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnFavorite"
+            android:text="Thêm sở thích của bạn"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#81B388FF"
+            android:textColor="#FFFFFF"/>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:singleLine="false"
+            app:chipSpacing="8dp" />
+
+        <Button
+            android:id="@+id/btnAddImg"
+            android:text="Thêm ảnh"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#81B388FF"
+            android:textColor="#FFFFFF"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSelectedImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:text="Lưu hồ sơ"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#81B388FF"
+            android:textColor="#FFFFFF"/>
+
+    </LinearLayout>
+
+</ScrollView>

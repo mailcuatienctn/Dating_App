@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <!-- Ảnh đại diện người gửi -->
+    <ImageView
+        android:background="@drawable/bg_avatar_circle"
+        android:id="@+id/image_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_avatar_received"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
+        />
+
+    <!-- Nội dung tin nhắn -->
+    <TextView
+        android:id="@+id/text_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_message_received"
+        android:textColor="#000"
+        android:padding="10dp"/>
+</LinearLayout>

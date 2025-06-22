@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#81B388FF"
+    tools:context=".RegisterActivity">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/holo_blue_bright"
+        app:title="LOVE_U"
+        app:titleTextColor="#FF0000"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        android:fontFamily="@font/uvn">
+
+        <ImageView
+            android:id="@+id/imageLove"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Love icon"
+            android:src="@drawable/ic_love" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <TextView
+                android:text="Đăng Ký"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"/>
+
+<!--            <EditText-->
+<!--                android:id="@+id/editName"-->
+<!--                android:hint="Họ tên"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:padding="12dp"-->
+<!--                android:background="@drawable/bg_edittext" />-->
+
+            <EditText
+                android:id="@+id/editPhone"
+                android:hint="Email hoặc SĐT"
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_edittext" />
+
+            <EditText
+                android:id="@+id/editPassword"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_edittext" />
+
+            <EditText
+                android:id="@+id/editCheckPassword"
+                android:hint="Xác nhận mật khẩu"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_edittext" />
+
+            <Button
+                android:id="@+id/btnRegister"
+                android:text="Đăng Ký"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="#81B388FF"
+                android:textColor="#FFF"/>
+
+            <!-- OTP layout: Ẩn ban đầu -->
+            <LinearLayout
+                android:id="@+id/otpLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="24dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhập mã xác nhận (OTP)"
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"/>
+
+                <EditText
+                    android:id="@+id/editOTP"
+                    android:hint="Nhập mã OTP"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:background="@drawable/bg_edittext"/>
+
+                <Button
+                    android:id="@+id/btnVerifyOTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Xác nhận OTP"
+                    android:backgroundTint="#FF9800"
+                    android:textColor="#FFF"/>
+            </LinearLayout>
+
+            <!-- Chuyển sang đăng nhập -->
+            <TextView
+                android:id="@+id/textToLogin"
+                android:text="Đã có tài khoản? Đăng nhập"
+                android:textColor="#0066CC"
+                android:textSize="16sp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
