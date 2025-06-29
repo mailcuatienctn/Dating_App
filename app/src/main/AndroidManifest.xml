@@ -19,6 +19,21 @@
         android:theme="@style/Theme.DatingApp"
         tools:targetApi="31">
         <activity
+            android:name=".RunExampleChat"
+            android:exported="true" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProfileDetailActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".DiscoveryActivity"
             android:exported="false" />
         <activity

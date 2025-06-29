@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <!-- Avatar của người gửi tin nhắn -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_message_profile"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/bg_avatar_circle"
+        app:civ_border_color="@color/gray"
+        app:civ_border_width="0.5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Nội dung tin nhắn nhận được -->
+    <TextView
+        android:id="@+id/text_message_body_received"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_message_received"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:elevation="1dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:maxWidth="280dp"
+        app:layout_constraintStart_toEndOf="@id/image_message_profile"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Chào bạn! Mình cũng rất vui được match với bạn. Bạn khỏe không?" />
+
+    <!-- Thời gian gửi tin nhắn -->
+    <TextView
+        android:id="@+id/text_message_time_received"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        app:layout_constraintStart_toEndOf="@id/text_message_body_received"
+    app:layout_constraintTop_toBottomOf="@id/text_message_body_received"
+    tools:text="10:35 PM" />
+</androidx.constraintlayout.widget.ConstraintLayout>

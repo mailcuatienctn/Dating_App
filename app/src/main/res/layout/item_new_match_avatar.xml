@@ -1,0 +1,33 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="120dp"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="5dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- ImageView với nền bo góc -->
+    <ImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_avatar_placeholder"
+        android:background="@drawable/bg_rounded_image"
+        android:scaleType="centerCrop" />
+
+    <!-- Tên người dùng -->
+    <TextView
+        android:id="@+id/text_new_match_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        tools:text="Nguyễn Nhật Hạ" />
+</LinearLayout>

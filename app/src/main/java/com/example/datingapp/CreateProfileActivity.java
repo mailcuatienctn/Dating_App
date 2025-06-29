@@ -340,6 +340,7 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         // ✅ Tạo đối tượng User
         User userProfile = new User(
+                currentUserId,
                 name,
                 gender,
                 bio,

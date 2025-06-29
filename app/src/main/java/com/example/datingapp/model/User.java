@@ -1,8 +1,9 @@
 package com.example.datingapp.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private String uid;
     private String name;
     private String gender;
@@ -12,6 +13,7 @@ public class User {
     private List<String> imgUrls;
     private Double latitude;
     private Double longitude;
+    private String province;
 
     // Bắt buộc phải có constructor rỗng cho Firestore
     public User() {}
@@ -38,6 +40,27 @@ public class User {
         this.imgUrls = imgUrls;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public User(String uid, String name, String gender, String bio, int age, List<String> favorites, List<String> imgUrls, Double latitude, Double longitude, String province) {
+        this.uid = uid;
+        this.name = name;
+        this.gender = gender;
+        this.bio = bio;
+        this.age = age;
+        this.favorites = favorites;
+        this.imgUrls = imgUrls;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.province = province;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getUid() {

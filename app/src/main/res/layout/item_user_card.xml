@@ -1,159 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll_profile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".UserFragment">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    >
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="24dp"> <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_avatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:padding="2dp" android:background="@drawable/bg_avatar_circle" android:scaleType="centerCrop"
-        android:src="@drawable/bg_card" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:strokeColor="?attr/colorPrimary" app:strokeWidth="2dp"
-        android:contentDescription="Ảnh đại diện" />
+        android:orientation="vertical"
+        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Trần Vịnh Tiến"
-            android:textSize="26sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end" />
-
-        <TextView
-            android:id="@+id/text_age_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="22 tuổi • Nam"
-            android:textSize="18sp"
-            android:textColor="#666666"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:id="@+id/text_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Đà Nẵng, Việt Nam"
-            android:textSize="16sp"
-            android:textColor="#666666"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_location" android:gravity="center_vertical"
-            android:layout_marginBottom="24dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <TextView
+        <!-- Dòng: Tên và Tuổi -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Giới thiệu bản thân"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/text_bio"
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên người dùng"
+                android:paddingLeft="10dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:text="23"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Dòng: Địa điểm + Icon -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Xin chào! Tôi là sinh viên IT, thích công nghệ và tìm kiếm người đặc biệt! Tôi thích chơi game, đọc sách và khám phá những điều mới mẻ trong cuộc sống."
-            android:textSize="16sp"
-            android:textColor="#444444"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
             android:layout_marginBottom="8dp"
-            android:text="Sở thích"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/text_hobbies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Chơi game, đọc sách, du lịch, nấu ăn, tập gym, nghe nhạc, xem phim"
-            android:textSize="16sp"
-            android:textColor="#444444"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="6dp"
+                android:src="@drawable/ic_location"
+                android:contentDescription="location icon" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="TP Hồ Chí Minh"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thư viện ảnh" android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
 
+
+        <!-- RecyclerView hình ảnh -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_photos"
+            android:id="@+id/rvImageList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true"
-            android:paddingHorizontal="16dp" android:clipToPadding="false" android:layout_marginBottom="32dp"
-            />
-
-        <Button
-            android:id="@+id/btn_edit_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chỉnh sửa hồ sơ"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="?attr/colorPrimary" android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:paddingVertical="12dp"
-            app:cornerRadius="8dp" /> </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            android:nestedScrollingEnabled="false"
+            android:scrollbars="vertical"
+            android:overScrollMode="always"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -1,27 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="start"
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <!-- Ảnh đại diện người gửi -->
-    <ImageView
-        android:background="@drawable/bg_avatar_circle"
-        android:id="@+id/image_avatar"
+    <!-- Ảnh đại diện người gửi dùng CircleImageView -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/image_message_profile"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_avatar_received"
         android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_avatar_received"
         android:scaleType="centerCrop"
-        />
+        app:civ_border_width="0.5dp"
+        app:civ_border_color="@color/gray"
+        android:background="@drawable/bg_avatar_circle" />
 
     <!-- Nội dung tin nhắn -->
     <TextView
-        android:id="@+id/text_message"
+        android:id="@+id/text_message_body_received"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_message_received"
-        android:textColor="#000"
-        android:padding="10dp"/>
+        android:textColor="#000000"
+        android:padding="10dp"
+        android:maxLines="10"
+        android:ellipsize="end" />
+
+    <!-- Thêm TextView hiển thị thời gian nếu cần -->
+    <TextView
+        android:id="@+id/text_message_time_received"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#888888"
+        android:textSize="12sp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="8dp"
+        android:paddingBottom="4dp" />
+
 </LinearLayout>

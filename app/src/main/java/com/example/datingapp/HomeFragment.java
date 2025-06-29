@@ -3,6 +3,7 @@ package com.example.datingapp;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,6 @@ public class HomeFragment extends Fragment {
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-
-
         return fragment;
     }
 
@@ -35,17 +34,26 @@ public class HomeFragment extends Fragment {
         EditText editLocation = view.findViewById(R.id.edit_location);
         EditText editGender = view.findViewById(R.id.edit_gender);
         Button btnFind = view.findViewById(R.id.btnFind);
+        Log.d("frangment", "homee");
 
-
-        //Xử lý khi click Tìm tình iuu
+        // --- ⭐ Xử lý khi click Tìm tình iuu (GỬI DỮ LIỆU) ⭐ ---
         btnFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Lấy giá trị đã chọn từ EditText
+                String selectedLocation = editLocation.getText().toString().trim();
+                String selectedGender = editGender.getText().toString().trim();
+
+                // Tạo Intent để chuyển sang DiscoveryActivity
                 Intent i = new Intent(getActivity(), DiscoveryActivity.class);
+
+                // Đính kèm dữ liệu vào Intent bằng putExtra
+                i.putExtra("selectedLocation", selectedLocation);
+                i.putExtra("selectedGender", selectedGender);
+
                 startActivity(i);
             }
         });
-
 
         // Xử lý chọn tỉnh/thành
         editLocation.setOnClickListener(v -> {
