@@ -6,7 +6,7 @@
     android:id="@+id/scroll_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     tools:context=".UserFragment">
 
     <LinearLayout
@@ -14,16 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:paddingBottom="24dp"> <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/image_avatar"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="16dp"
-        android:padding="2dp" android:background="@drawable/bg_avatar_circle" android:scaleType="centerCrop"
-        android:src="@drawable/bg_card" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:strokeColor="?attr/colorPrimary" app:strokeWidth="2dp"
-        android:contentDescription="Ảnh đại diện" />
+        android:paddingBottom="24dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            app:strokeWidth="2dp"
+            android:contentDescription="Ảnh đại diện" />
 
         <TextView
             android:id="@+id/text_name"
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             tools:text="Trần Vịnh Tiến"
             android:textSize="26sp"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
@@ -40,41 +40,40 @@
             android:id="@+id/text_age_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="22 tuổi • Nam"
+            tools:text="Nam, 22 tuổi"
             android:textSize="18sp"
-            android:textColor="#666666"
             android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp" />
+            android:layout_marginBottom="12dp"
+            android:drawableStart="@drawable/male"
+            android:drawablePadding="8dp"
+            android:layout_gravity="start"
+            android:paddingTop="15dp"
+            android:layout_marginStart="16dp" />
 
-        <TextView
-            android:id="@+id/text_location"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Đà Nẵng, Việt Nam"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_vertical"> <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Đang ở"
             android:textSize="16sp"
             android:textColor="#666666"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_location" android:gravity="center_vertical"
-            android:layout_marginBottom="24dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Giới thiệu bản thân"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
+            android:drawableStart="@drawable/ic_location"
+            android:layout_marginEnd="8dp" /> <TextView
+            android:id="@+id/text_location"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:text="Đà Nẵng, Việt Nam"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:ellipsize="end"
+            android:maxLines="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_bio"
@@ -85,8 +84,12 @@
             android:textColor="#444444"
             android:lineSpacingExtra="4dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:drawableStart="@drawable/ic_introduce"
+            android:layout_marginEnd="8dp"
+            />
+
+
 
         <View
             android:layout_width="match_parent"
@@ -101,7 +104,7 @@
             android:layout_height="wrap_content"
             android:text="Sở thích"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -130,8 +133,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thư viện ảnh" android:textSize="20sp"
-            android:textColor="@color/black"
+            android:text="Thư viện ảnh"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -142,8 +146,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:paddingHorizontal="16dp" android:clipToPadding="false" android:layout_marginBottom="32dp"
-            />
+            android:paddingHorizontal="16dp"
+            android:clipToPadding="false"
+            android:layout_marginBottom="32dp" />
 
         <Button
             android:id="@+id/btn_edit_profile"
@@ -152,8 +157,8 @@
             android:text="Chỉnh sửa hồ sơ"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="?attr/colorPrimary" android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:backgroundTint="#FF8080"
             android:paddingVertical="12dp"
-            app:cornerRadius="8dp" /> </LinearLayout>
+            app:cornerRadius="8dp" />
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

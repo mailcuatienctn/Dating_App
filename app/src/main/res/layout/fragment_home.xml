@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
-            android:text="Bạn dự định kiếm nửa kia ở đâu?"
+            android:text="Cùng tìm nửa kia nào?"
             android:textColor="#333333"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -37,7 +37,6 @@
             android:textSize="16sp"
             android:inputType="none" />
 
-
         <EditText
             android:id="@+id/edit_gender"
             android:layout_width="match_parent"
@@ -50,12 +49,11 @@
             android:focusable="false"
             android:clickable="true" />
 
-
         <Button
             android:id="@+id/btnFind"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:backgroundTint="#EA80FC"
+            android:backgroundTint="#FF8080"
             android:text="Tìm tình iuu"
             android:textColor="@android:color/white" />
 

@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.firebase.auth.FirebaseAuth; // Thêm import Firebase Auth
@@ -43,17 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance(); // Khởi tạo FirebaseAuth
 
-        // Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
         Typeface customFont = ResourcesCompat.getFont(this, R.font.uvn);
-        // Duyệt qua các view con của toolbar để tìm TextView và áp dụng font
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            View view = toolbar.getChildAt(i);
-            if (view instanceof TextView) {
-                ((TextView) view).setTypeface(customFont);
-            }
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
 
         // Điều hướng đến đăng ký nếu chưa có tài khoản
         textToLogin.setOnClickListener(v -> {

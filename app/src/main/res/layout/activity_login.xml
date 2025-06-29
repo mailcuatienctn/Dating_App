@@ -1,55 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#81B388FF"
-    tools:context=".MainActivity">
+    android:background="@android:color/white"
+    android:padding="16dp">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/holo_blue_bright"
-        app:title="LOVE_U"
-        app:titleTextColor="#FF0000"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        android:fontFamily="@font/uvn">
+        android:layout_height="wrap_content">
 
-        <!-- Love Icon nằm trong Toolbar -->
+        <TextView
+            android:id="@+id/titleLoveYou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LOVEYOU"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:textColor="#FFABA8"
+            android:fontFamily="@font/uvn"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+
         <ImageView
             android:id="@+id/imageLove"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_gravity="end|center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="12dp"
-            android:contentDescription="Love icon"
-            android:src="@drawable/ic_love" />
-    </androidx.appcompat.widget.Toolbar>
+            android:src="@drawable/ic_love"
+            android:contentDescription="Love icon" />
+    </RelativeLayout>
 
     <TextView
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="Đăng nhập để tìm thấy nửa kia của mình nhé!"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingTop="20dp"
+        android:gravity="center_horizontal" android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Đăng Nhập"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="24dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textColor="@android:color/black" />
 
     <EditText
         android:id="@+id/editEmail"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
+        android:hint="Số điện thoại"
+        android:inputType="phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp"
-        android:background="@drawable/bg_edittext" />
+        android:background="@drawable/bg_edittext"
+        android:drawableStart="@drawable/ic_phone"
+        android:drawablePadding="8dp"
+        android:autofillHints="phone" />
 
     <EditText
         android:id="@+id/editPassword"
@@ -59,7 +77,10 @@
         android:layout_height="wrap_content"
         android:padding="12dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_edittext" />
+        android:background="@drawable/bg_edittext"
+        android:drawableStart="@drawable/ic_password"
+        android:drawablePadding="8dp"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/btnLogin"
@@ -67,17 +88,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:backgroundTint="#81B388FF"
-        android:textColor="#FFF"/>
+        android:backgroundTint="#FF8080"
+        android:textColor="@android:color/white" />
 
-    <TextView
-        android:id="@+id/textToLogin"
-        android:text="Chưa có tài khoản? Đăng ký ngay"
-        android:textColor="#0066CC"
-        android:textSize="16sp"
-        android:gravity="center"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp" />
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản?  "
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký ngay"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

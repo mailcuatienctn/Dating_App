@@ -66,21 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
         otpLayout = findViewById(R.id.otpLayout);
         textToLogin = findViewById(R.id.textToLogin);
 
-        // Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Typeface customFont = ResourcesCompat.getFont(this, R.font.uvn);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Đăng Ký");
-
-            View toolbarTitle = toolbar.getChildAt(0);
-            if (toolbarTitle instanceof TextView) {
-                ((TextView) toolbarTitle).setTypeface(customFont);
-            }
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
-
         textToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
