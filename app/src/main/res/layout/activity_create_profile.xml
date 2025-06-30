@@ -94,6 +94,25 @@
         android:layout_marginStart="32dp" android:buttonTint="?attr/colorPrimary" />
     </RadioGroup>
 
+    <!-- Chiều cao -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chiều cao của bạn"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp" />
+
+    <Spinner
+        android:id="@+id/spinnerHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_edittext"
+        android:padding="14dp"
+        android:layout_marginBottom="16dp" />
+
+
     <Button
         android:id="@+id/btnFavorite"
         android:text="Thêm sở thích của bạn"

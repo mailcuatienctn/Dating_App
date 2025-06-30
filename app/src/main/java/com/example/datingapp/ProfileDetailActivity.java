@@ -41,7 +41,7 @@ public class ProfileDetailActivity extends AppCompatActivity {
 
     private String currentUserId;
     private ShapeableImageView imageAvatar;
-    private TextView textName, textAgeGender, textLocation, textBio, textHobbies;
+    private TextView textName, textAgeGender, textLocation, textBio, textHobbies, textHeight;
     private RecyclerView recyclerPhotos;
     private PhotoAdapter photoAdapter;
     private List<String> photoList;
@@ -67,6 +67,7 @@ public class ProfileDetailActivity extends AppCompatActivity {
         linearButtons = findViewById(R.id.linear_buttons);
         btnLike = findViewById(R.id.btn_like);
         btnDislike = findViewById(R.id.btn_dislike);
+        textHeight = findViewById(R.id.text_height);
 
         recyclerPhotos.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         photoList = new ArrayList<>();
@@ -176,7 +177,7 @@ public class ProfileDetailActivity extends AppCompatActivity {
         // Giả định user.getAge() là năm sinh. Nếu là tuổi thật, hãy bỏ (2025 -)
         textAgeGender.setText((2025 - user.getAge()) + " tuổi • " + user.getGender());
         textBio.setText(!TextUtils.isEmpty(user.getBio()) ? user.getBio() : "Chưa có mô tả bản thân");
-
+        textHeight.setText(""+user.getHeight() + " cm");
         List<String> favorites = user.getFavorites(); // Giả định trường này là `favorites` thay vì `interests`
         if (favorites != null && !favorites.isEmpty()) {
             textHobbies.setText("Sở thích: " + TextUtils.join(", ", favorites));

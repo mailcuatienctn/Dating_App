@@ -37,6 +37,20 @@
             android:ellipsize="end" />
 
         <TextView
+            android:id="@+id/text_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="160 cm"
+            android:textSize="18sp"
+            android:textColor="#666666" android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:drawableStart="@drawable/ic_height"
+            android:drawablePadding="8dp"
+            android:layout_gravity="start"
+            android:paddingTop="15dp"
+            android:layout_marginStart="16dp" />
+
+        <TextView
             android:id="@+id/text_age_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

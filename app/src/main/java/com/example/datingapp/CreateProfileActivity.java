@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.TextUtils; // Giữ nguyên, mặc dù không dùng ở đây
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +25,9 @@ import com.example.datingapp.adapter.SelectedImagesAdapter;
 import com.example.datingapp.model.User;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+// Import cần thiết cho TextInputLayout nếu bạn sử dụng AutoCompleteTextView bên trong
+// import com.google.android.material.textfield.TextInputLayout;
+// import android.widget.AutoCompleteTextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +35,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashMap; // Giữ nguyên, mặc dù không dùng ở đây
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +51,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     private Button btnAddImg;
     private Button btnFavorite;
     private Button btnSave;
-    private Spinner spinnerYearOfBirth;
+    private Spinner spinnerYearOfBirth, spinnerHeight;
     private List<String> finalImageUrlsToSave = new ArrayList<>(); // This will hold the URLs to be saved to Firestore
     private ChipGroup chipGroupFavorites;
 
@@ -94,6 +97,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         editName = findViewById(R.id.editName);
         editBio = findViewById(R.id.editBio);
         spinnerYearOfBirth = findViewById(R.id.spinnerYearOfBirth);
+        spinnerHeight = findViewById(R.id.spinnerHeight);
 
         // Tạo list năm sinh từ 1950 đến 2009
         List<String> yearList = new ArrayList<>();
@@ -101,13 +105,27 @@ public class CreateProfileActivity extends AppCompatActivity {
             yearList.add(String.valueOf(year));
         }
 
-        // Tạo adapter và gán vào spinner
+        // Tạo list chiều cao (đã thêm " cm")
+        List<String> heightList = new ArrayList<>(); // Đã thay đổi kiểu dữ liệu từ Integer sang String
+        for (int height = 140; height <= 200; height++) {
+            heightList.add(height + " cm"); // Đã thêm chuỗi " cm"
+        }
+
+        // Tạo adapter và gán vào spinner năm sinh
         ArrayAdapter<String> yearOfBirthAdapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_spinner_item,
+                android.R.layout.simple_spinner_item, // Có thể thay đổi thành R.layout.simple_spinner_dropdown_item nếu muốn tùy chỉnh sâu hơn
                 yearList);
         yearOfBirthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerYearOfBirth.setAdapter(yearOfBirthAdapter);
+
+        // Tạo adapter và gán vào spinner chiều cao (đã thay đổi kiểu dữ liệu của ArrayAdapter)
+        ArrayAdapter<String> heightAdapter = new ArrayAdapter<>( // Đã thay đổi kiểu dữ liệu của ArrayAdapter
+                this,
+                android.R.layout.simple_spinner_item, // Có thể thay đổi thành R.layout.simple_spinner_dropdown_item nếu muốn tùy chỉnh sâu hơn
+                heightList);
+        heightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerHeight.setAdapter(heightAdapter);
 
         // Khởi tạo Firebase
         db = FirebaseFirestore.getInstance();
@@ -184,6 +202,19 @@ public class CreateProfileActivity extends AppCompatActivity {
                                 int spinnerPosition = adapter.getPosition(yearString);
                                 if (spinnerPosition != -1) {
                                     spinnerYearOfBirth.setSelection(spinnerPosition);
+                                }
+                            }
+                        }
+
+                        // Load height
+                        Long heightLong = documentSnapshot.getLong("height");
+                        if (heightLong != null) {
+                            String heightStringWithUnit = heightLong + " cm"; // Thêm " cm" để khớp với format của Spinner
+                            ArrayAdapter<String> adapter = (ArrayAdapter<String>) spinnerHeight.getAdapter();
+                            if (adapter != null) {
+                                int spinnerPosition = adapter.getPosition(heightStringWithUnit);
+                                if (spinnerPosition != -1) {
+                                    spinnerHeight.setSelection(spinnerPosition);
                                 }
                             }
                         }
@@ -336,6 +367,23 @@ public class CreateProfileActivity extends AppCompatActivity {
             return;
         }
 
+        // ĐÃ CẬP NHẬT CÁCH LẤY GIÁ TRỊ CHIỀU CAO TỪ SPINNER
+        int height = 0;
+        if (spinnerHeight.getSelectedItem() != null) {
+            try {
+                String selectedHeightString = spinnerHeight.getSelectedItem().toString();
+                // Xóa " cm" khỏi chuỗi và chuyển đổi sang int
+                height = Integer.parseInt(selectedHeightString.replace(" cm", "").trim());
+            } catch (NumberFormatException e) {
+                Log.e(TAG, "Lỗi chuyển đổi chiều cao: " + e.getMessage()); // Sửa thông báo lỗi
+                Toast.makeText(this, "Chiều cao không hợp lệ.", Toast.LENGTH_SHORT).show(); // Sửa thông báo lỗi
+                return;
+            }
+        } else {
+            Toast.makeText(this, "Vui lòng chọn chiều cao.", Toast.LENGTH_SHORT).show(); // Sửa thông báo lỗi
+            return;
+        }
+
         List<String> favorites = getSelectedFavorites();
 
         // ✅ Tạo đối tượng User
@@ -348,7 +396,9 @@ public class CreateProfileActivity extends AppCompatActivity {
                 favorites,
                 finalImageUrlsToSave,
                 storedLatitude,
-                storedLongitude
+                storedLongitude,
+                "", // status
+                height
         );
 
         // ✅ Lưu lên Firestore
@@ -414,19 +464,20 @@ public class CreateProfileActivity extends AppCompatActivity {
     }
 
     private int getIconForFavorite(String favorite) {
+        // Bạn cần thay thế bằng các drawable icon thực tế của bạn
         switch (favorite) {
             case "Du lịch":
-                return R.drawable.ic_dulich; // Replace with your actual drawable
+                return R.drawable.ic_heart_white; // Ví dụ: ic_travel
             case "Âm nhạc":
-                return R.drawable.ic_dulich; // Replace with your actual drawable
+                return R.drawable.ic_heart_white; // Ví dụ: ic_music
             case "Thể thao":
-                return R.drawable.ic_dulich; // Replace with your actual drawable
+                return R.drawable.ic_heart_white; // Ví dụ: ic_sport
             case "Ẩm thực":
-                return R.drawable.ic_dulich;   // Replace with your actual drawable
+                return R.drawable.ic_heart_white;   // Ví dụ: ic_food
             case "Chơi game":
-                return R.drawable.ic_dulich; // Replace with your actual drawable
+                return R.drawable.ic_heart_white; // Ví dụ: ic_game
             case "Nấu ăn":
-                return R.drawable.ic_dulich; // Replace with your actual drawable
+                return R.drawable.ic_heart_white; // Ví dụ: ic_cooking
             default:
                 return 0;
         }

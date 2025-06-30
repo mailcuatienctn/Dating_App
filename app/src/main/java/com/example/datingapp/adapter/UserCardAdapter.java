@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.datingapp.ProfileDetailActivity;
 import com.example.datingapp.R;
 import com.example.datingapp.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,8 +27,6 @@ public class UserCardAdapter extends RecyclerView.Adapter<UserCardAdapter.UserVi
     public UserCardAdapter(List<User> userList, Context context) {
         this.userList = userList;
         this.context = context;
-
-
     }
 
     @NonNull
@@ -42,12 +42,8 @@ public class UserCardAdapter extends RecyclerView.Adapter<UserCardAdapter.UserVi
         holder.tvName.setText(user.getName()+",");
         holder.tvLocation.setText(user.getProvince());
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
-        holder.rvImageList.setLayoutManager(layoutManager);
-        holder.rvImageList.setNestedScrollingEnabled(true);
+        Picasso.get().load(user.getFirstImg()).into(holder.rvImageList);
 
-        ImageListAdapter imageListAdapter = new ImageListAdapter(user.getImgUrls(), context);
-        holder.rvImageList.setAdapter(imageListAdapter);
 
         // Trong onBindViewHolder
         holder.itemView.setOnClickListener(v -> {
@@ -67,14 +63,14 @@ public class UserCardAdapter extends RecyclerView.Adapter<UserCardAdapter.UserVi
 
     public static class UserViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        RecyclerView rvImageList;
+        ImageView rvImageList;
         TextView tvLocation;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
             tvLocation = itemView.findViewById(R.id.tvLocation);
-            rvImageList = itemView.findViewById(R.id.rvImageList);
+            rvImageList = itemView.findViewById(R.id.imgUser);
         }
     }
 

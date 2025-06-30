@@ -6,7 +6,7 @@
     android:id="@+id/scroll_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     tools:context=".ProfileDetailActivity">
 
     <LinearLayout
@@ -18,16 +18,10 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_avatar"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
             android:layout_marginBottom="16dp"
-            android:padding="2dp"
-            android:background="@drawable/bg_avatar_circle"
             android:scaleType="centerCrop"
-            android:src="@drawable/bg_card"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:strokeColor="?attr/colorPrimary"
             app:strokeWidth="2dp"
             android:contentDescription="Ảnh đại diện" />
 
@@ -37,52 +31,69 @@
             android:layout_height="wrap_content"
             tools:text="Trần Vịnh Tiến"
             android:textSize="26sp"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:maxLines="1"
             android:ellipsize="end" />
 
         <TextView
+            android:id="@+id/text_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="160 cm"
+            android:textSize="18sp"
+            android:textColor="#666666" android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:drawableStart="@drawable/ic_height"
+            android:drawablePadding="8dp"
+            android:layout_gravity="start"
+            android:paddingTop="15dp"
+            android:layout_marginStart="16dp" />
+
+        <TextView
             android:id="@+id/text_age_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="22 tuổi • Nam"
+            tools:text="Nam, 22 tuổi"
             android:textSize="18sp"
-            android:textColor="#666666"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:id="@+id/text_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Đà Nẵng, Việt Nam"
-            android:textSize="16sp"
-            android:textColor="#666666"
+            android:textColor="#666666" android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:drawableStart="@drawable/ic_person"
             android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_location"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="24dp" />
+            android:layout_gravity="start"
+            android:paddingTop="15dp"
+            android:layout_marginStart="16dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Tiêu đề Giới thiệu -->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Giới thiệu"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
+            android:orientation="horizontal"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="24dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đang ở"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_location"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:id="@+id/text_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Đà Nẵng, Việt Nam"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:ellipsize="end"
+                android:maxLines="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_bio"
@@ -93,8 +104,9 @@
             android:textColor="#444444"
             android:lineSpacingExtra="4dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
+            android:layout_marginBottom="24dp"
+            android:drawableStart="@drawable/ic_introduce"
+            android:layout_marginEnd="8dp" />
 
         <View
             android:layout_width="match_parent"
@@ -104,13 +116,12 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp" />
 
-        <!-- Tiêu đề Sở thích -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Sở thích"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -136,13 +147,12 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp" />
 
-        <!-- Tiêu đề Hình ảnh -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hình ảnh"
+            android:text="Thư viện ảnh"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@android:color/black"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -153,30 +163,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingHorizontal="16dp"
             android:clipToPadding="false"
             android:layout_marginBottom="32dp" />
 
-        <!-- Like & Dislike Buttons (ẩn khi xem chi tiết) -->
         <LinearLayout
             android:id="@+id/linear_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:paddingVertical="16dp">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_dislike"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:src="@drawable/ic_close_white"
-                android:contentDescription="Không thích"
-                app:tint="@android:color/white"
-                app:backgroundTint="@color/red"
-                app:fabSize="normal" />
+            android:paddingVertical="16dp"
+            android:layout_marginTop="24dp"> <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_dislike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:src="@drawable/ic_close_white"
+            android:contentDescription="Không thích"
+            app:tint="@android:color/white"
+            app:backgroundTint="@color/red"
+            app:fabSize="normal" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/btn_like"

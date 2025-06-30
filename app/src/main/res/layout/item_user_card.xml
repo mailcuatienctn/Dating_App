@@ -8,75 +8,88 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"
     android:clickable="true"
-    android:focusable="true"
-    >
+    android:focusable="true">
 
-    <LinearLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgUser"
+            android:layout_width="match_parent"
+            android:layout_height="680dp" android:scaleType="centerCrop"
+            android:src="@drawable/ic_avatar_placeholder"
+            android:contentDescription="Ảnh người dùng" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="120dp" android:layout_gravity="bottom" android:background="@drawable/gradient_bottom_to_top" /> <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:layout_gravity="bottom"
+        android:padding="16dp">
 
-        <!-- Dòng: Tên và Tuổi -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp">
+            android:layout_marginBottom="4dp">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tên người dùng"
-                android:paddingLeft="10dp"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
 
             <TextView
                 android:id="@+id/tvAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:text="23"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:text=", 23"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
         </LinearLayout>
 
-        <!-- Dòng: Địa điểm + Icon -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="8dp"
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginStart="6dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:src="@drawable/ic_location"
-                android:contentDescription="location icon" />
-
+                android:contentDescription="location icon"
+                android:tint="@color/white"
+                />
             <TextView
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="TP Hồ Chí Minh"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="2" />
         </LinearLayout>
 
-
-
-        <!-- RecyclerView hình ảnh -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvImageList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:scrollbars="vertical"
-            android:overScrollMode="always"/>
     </LinearLayout>
+    </FrameLayout>
 </androidx.cardview.widget.CardView>

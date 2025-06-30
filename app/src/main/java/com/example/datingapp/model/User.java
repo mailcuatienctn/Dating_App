@@ -14,7 +14,7 @@ public class User implements Serializable {
     private Double latitude;
     private Double longitude;
     private String province;
-
+    private int height;
     // Bắt buộc phải có constructor rỗng cho Firestore
     public User() {}
 
@@ -28,6 +28,28 @@ public class User implements Serializable {
         this.imgUrls = imgUrls;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+
+    public User(String uid, String name, String gender, String bio, int age, List<String> favorites, List<String> imgUrls, Double latitude, Double longitude, String province, int height) {
+        this.uid = uid;
+        this.name = name;
+        this.gender = gender;
+        this.bio = bio;
+        this.age = age;
+        this.favorites = favorites;
+        this.imgUrls = imgUrls;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.province = province;
+        this.height = height;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public User(String uid, String name, String gender, String bio, int age, List<String> favorites, List<String> imgUrls, Double latitude, Double longitude) {
@@ -109,4 +131,12 @@ public class User implements Serializable {
                 ", longitude=" + longitude +
                 '}';
     }
+
+    public String getFirstImg(){
+        if (imgUrls != null){
+            return imgUrls.get(0);
+        }
+        return "";
+    }
+
 }

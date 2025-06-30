@@ -44,7 +44,7 @@ public class UserFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     private ImageView imageAvatar;
-    private TextView textName, textAgeGender, textLocation, textBio, textHobbies;
+    private TextView textName, textAgeGender, textLocation, textBio, textHobbies, textHeight;
     private RecyclerView recyclerPhotos;
     private PhotoAdapter photoAdapter;
     private List<String> photoList; // Khai báo biến
@@ -68,6 +68,7 @@ public class UserFragment extends Fragment {
         textHobbies = view.findViewById(R.id.text_hobbies);
         recyclerPhotos = view.findViewById(R.id.recycler_photos);
         btn_edit_profile = view.findViewById(R.id.btn_edit_profile);
+        textHeight = view.findViewById(R.id.text_height);
 
         // Cấu hình RecyclerView cho ảnh (cuộn dọc)
         recyclerPhotos.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
@@ -117,7 +118,7 @@ public class UserFragment extends Fragment {
 
                             // ✅ Hiển thị dữ liệu từ đối tượng User
                             textName.setText(!TextUtils.isEmpty(user.getName()) ? user.getName() : "Chưa cập nhật tên");
-
+                            textHeight.setText("" + user.getHeight() + "cm");
                             if (user.getAge() > 1900 && !TextUtils.isEmpty(user.getGender())) {
                                 int age = Calendar.getInstance().get(Calendar.YEAR) - user.getAge();
                                 textAgeGender.setText(age + " tuổi • " + user.getGender());
@@ -130,7 +131,7 @@ public class UserFragment extends Fragment {
                             // Hiển thị sở thích
                             List<String> favorites = user.getFavorites();
                             if (favorites != null && !favorites.isEmpty()) {
-                                textHobbies.setText("Sở thích: " + TextUtils.join(", ", favorites));
+                                textHobbies.setText(TextUtils.join(", ", favorites));
                             } else {
                                 textHobbies.setText("Chưa có sở thích nào.");
                             }
