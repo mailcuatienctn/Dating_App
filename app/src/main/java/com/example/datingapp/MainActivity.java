@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -49,32 +48,6 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        Typeface customFont = ResourcesCompat.getFont(this, R.font.uvn);
-        TextView titleTextView = null;
-        if (toolbar.getChildCount() > 0 && toolbar.getChildAt(0) instanceof TextView) {
-            titleTextView = (TextView) toolbar.getChildAt(0);
-        }
-        if (titleTextView != null) {
-            titleTextView.setTypeface(customFont);
-        } else {
-            Log.w(TAG, "Toolbar title TextView not found directly. Font not applied.");
-        }
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        toolbar.setNavigationOnClickListener(v -> {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-                getSupportFragmentManager().popBackStack();
-            } else {
-                finish();
-            }
-        });
 
         bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setItemIconTintList(null);

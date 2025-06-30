@@ -23,12 +23,14 @@
         android:id="@+id/linear_buttons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
+        android:orientation="horizontal"
         android:paddingVertical="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <!-- Dislike Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -36,11 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
-            android:src="@drawable/ic_close_white"
             android:contentDescription="Không thích"
-            app:tint="@android:color/white"
-            app:backgroundTint="@color/red"
-            app:fabSize="normal" />
+            android:src="@drawable/ic_close_white"
+            app:backgroundTint="#FF9E80"
+            app:fabSize="normal"
+            app:tint="@color/white" />
 
         <!-- Like Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,11 +50,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:src="@drawable/ic_heart_white"
             android:contentDescription="Thích"
-            app:tint="@android:color/white"
-            app:backgroundTint="@color/green"
-            app:fabSize="normal" />
+            android:src="@drawable/ic_heart_white"
+            app:backgroundTint="#FF9E80"
+            app:fabSize="normal"
+            app:tint="@android:color/white" />
 
     </LinearLayout>
 
