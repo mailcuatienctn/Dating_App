@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -34,7 +35,10 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister, btnVerifyOTP;
     LinearLayout otpLayout;
     TextView textToLogin;
-
+    ImageView showPassword, showCheckPassword;
+    // Biến trạng thái để theo dõi mật khẩu đang hiển thị hay ẩn
+    private boolean isPasswordVisible = false;
+    private boolean isCheckPasswordVisible = false;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private String verificationId;
@@ -65,6 +69,25 @@ public class RegisterActivity extends AppCompatActivity {
         btnVerifyOTP = findViewById(R.id.btnVerifyOTP);
         otpLayout = findViewById(R.id.otpLayout);
         textToLogin = findViewById(R.id.textToLogin);
+        showPassword = findViewById(R.id.showPassword);
+        showCheckPassword = findViewById(R.id.showCheckPassword);
+
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility(editPassword, showPassword, !isPasswordVisible);
+                isPasswordVisible = !isPasswordVisible; // Cập nhật trạng thái
+            }
+        });
+
+        showCheckPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility(editCheckPassword, showCheckPassword, !isCheckPasswordVisible);
+                isCheckPasswordVisible = !isCheckPasswordVisible; // Cập nhật trạng thái
+            }
+        });
+
 
         textToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,4 +287,19 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void togglePasswordVisibility(EditText editText, ImageView toggleImageView, boolean showPassword) {
+        if (showPassword) {
+            // Hiển thị mật khẩu: chuyển InputType từ password sang text
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            toggleImageView.setImageResource(R.drawable.ic_hide_password); // ⭐ Đổi icon thành mắt gạch ⭐
+        } else {
+            // Ẩn mật khẩu: chuyển InputType từ text sang password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            toggleImageView.setImageResource(R.drawable.ic_show_password); // ⭐ Đổi icon thành mắt mở ⭐
+        }
+        // Di chuyển con trỏ về cuối văn bản sau khi thay đổi InputType
+        editText.setSelection(editText.getText().length());
+    }
+
 }

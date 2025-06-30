@@ -72,29 +72,66 @@
                 android:drawableStart="@drawable/ic_phone"
                 android:drawablePadding="8dp"/>
 
-            <EditText
-                android:id="@+id/editPassword"
-                android:hint="Nhập mật khẩu"
-                android:inputType="textPassword"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/bg_edittext"
-                android:drawableStart="@drawable/ic_password"
-                android:drawablePadding="8dp"/>
+                android:background="@drawable/bg_edittext">
 
-            <EditText
-                android:id="@+id/editCheckPassword"
-                android:hint="Xác nhận mật khẩu"
-                android:inputType="textPassword"
+                <EditText
+                    android:id="@+id/editPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập mật khẩu"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:drawableStart="@drawable/ic_password"
+                    android:drawablePadding="8dp"
+                    android:layout_toStartOf="@+id/showPassword" />
+
+                <ImageView
+                    android:id="@+id/showPassword"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_show_password"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Hiển thị mật khẩu" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/bg_edittext"
-                android:drawableStart="@drawable/ic_password2"
-                android:drawablePadding="8dp"/>
+                android:background="@drawable/bg_edittext">
+
+                <EditText
+                    android:id="@+id/editCheckPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Xác nhận mật khẩu"
+                    android:inputType="textPassword"
+                    android:padding="12dp"
+                    android:drawableStart="@drawable/ic_password2"
+                    android:drawablePadding="8dp"
+                    android:layout_toStartOf="@+id/showCheckPassword" />
+
+                <ImageView
+                    android:id="@+id/showCheckPassword"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_show_password"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="Hiển thị xác nhận mật khẩu" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/btnRegister"
@@ -105,7 +142,6 @@
                 android:backgroundTint="#FF8080"
                 android:textColor="#FFF"/>
 
-            <!-- OTP layout: Ẩn ban đầu -->
             <LinearLayout
                 android:id="@+id/otpLayout"
                 android:layout_width="match_parent"

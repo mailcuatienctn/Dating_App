@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPhone, editPassword;
     Button btnLogin;
     TextView textToLogin;
-
+    ImageView showPassword;
+    // Biến trạng thái để theo dõi mật khẩu đang hiển thị hay ẩn
+    private boolean isPasswordVisible = false;
     FirebaseFirestore db;
     // Khai báo FirebaseAuth để quản lý người dùng đăng nhập
     FirebaseAuth mAuth; // Thêm dòng này
@@ -38,12 +41,18 @@ public class LoginActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.editPassword);
         btnLogin = findViewById(R.id.btnLogin);
         textToLogin = findViewById(R.id.textToLogin);
+        showPassword = findViewById(R.id.showPassword);
 
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance(); // Khởi tạo FirebaseAuth
 
-        Typeface customFont = ResourcesCompat.getFont(this, R.font.uvn);
-
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                togglePasswordVisibility(editPassword, showPassword, !isPasswordVisible);
+                isPasswordVisible = !isPasswordVisible; // Cập nhật trạng thái
+            }
+        });
         // Điều hướng đến đăng ký nếu chưa có tài khoản
         textToLogin.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
@@ -160,4 +169,19 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    private void togglePasswordVisibility(EditText editText, ImageView toggleImageView, boolean showPassword) {
+        if (showPassword) {
+            // Hiển thị mật khẩu: chuyển InputType từ password sang text
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            toggleImageView.setImageResource(R.drawable.ic_hide_password); // ⭐ Đổi icon thành mắt gạch ⭐
+        } else {
+            // Ẩn mật khẩu: chuyển InputType từ text sang password
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            toggleImageView.setImageResource(R.drawable.ic_show_password); // ⭐ Đổi icon thành mắt mở ⭐
+        }
+        // Di chuyển con trỏ về cuối văn bản sau khi thay đổi InputType
+        editText.setSelection(editText.getText().length());
+    }
+
 }

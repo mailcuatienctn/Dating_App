@@ -8,6 +8,7 @@
     android:background="@android:color/white"
     android:padding="16dp">
 
+    <!-- Header Section with Title and Icon -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -23,7 +24,7 @@
             android:fontFamily="@font/uvn"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            />
+            android:layout_marginTop="16dp"/>
 
         <ImageView
             android:id="@+id/imageLove"
@@ -36,27 +37,31 @@
             android:contentDescription="Love icon" />
     </RelativeLayout>
 
+    <!-- Subtitle Text -->
     <TextView
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="Đăng nhập để tìm thấy nửa kia của mình nhé!"
         android:textSize="16sp"
         android:textStyle="bold"
         android:paddingTop="20dp"
-        android:gravity="center_horizontal" android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        />
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp" />
 
+    <!-- Login Text -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Đăng Nhập"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp"
-        android:layout_marginTop="20dp"
         android:gravity="center"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="20dp" />
 
+    <!-- Email / Phone Field -->
     <EditText
         android:id="@+id/editEmail"
         android:hint="Số điện thoại"
@@ -67,21 +72,44 @@
         android:background="@drawable/bg_edittext"
         android:drawableStart="@drawable/ic_phone"
         android:drawablePadding="8dp"
-        android:autofillHints="phone" />
+        android:autofillHints="phone"
+        android:layout_marginBottom="12dp" />
 
-    <EditText
-        android:id="@+id/editPassword"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
+    <!-- Password Field -->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
         android:layout_marginTop="12dp"
-        android:background="@drawable/bg_edittext"
-        android:drawableStart="@drawable/ic_password"
-        android:drawablePadding="8dp"
-        android:autofillHints="password" />
+        android:background="@drawable/bg_edittext">
 
+        <EditText
+            android:id="@+id/editPassword"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@drawable/bg_edittext"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="8dp"
+            android:autofillHints="password"
+            android:layout_marginEnd="32dp" />
+
+        <ImageView
+            android:id="@+id/showPassword"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            android:contentDescription="Hiển thị mật khẩu"
+            android:focusable="true"
+            android:src="@drawable/ic_show_password" />
+    </RelativeLayout>
+
+
+    <!-- Login Button -->
     <Button
         android:id="@+id/btnLogin"
         android:text="Đăng Nhập"
@@ -91,12 +119,13 @@
         android:backgroundTint="#FF8080"
         android:textColor="@android:color/white" />
 
+    <!-- Signup Section -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="24dp"
-        android:gravity="center_horizontal">
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
