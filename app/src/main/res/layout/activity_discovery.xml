@@ -9,16 +9,50 @@
     android:background="@android:color/white"
     tools:context=".DiscoveryActivity">
 
-    <!-- Card Stack View (Swipe Cards) -->
     <com.yuyakaido.android.cardstackview.CardStackView
         android:id="@+id/card_stack_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="24dp" />
+        android:paddingTop="80dp" android:paddingBottom="100dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/btn_filter"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_filter"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Lọc hồ sơ"
+        android:elevation="4dp" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="24dp"
+        app:layout_goneMarginTop="16dp" />
 
-    <!-- Like & Dislike Buttons -->
+    <TextView
+        android:id="@+id/tv_no_profiles_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Không tìm thấy hồ sơ nào phù hợp với bộ lọc của bạn. Vui lòng thử điều chỉnh bộ lọc hoặc quay lại sau!"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:padding="24dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
+
     <LinearLayout
         android:id="@+id/linear_buttons"
         android:layout_width="match_parent"
@@ -27,12 +61,11 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingVertical="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="4dp" app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Dislike Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_dislike"
             android:layout_width="wrap_content"
@@ -44,7 +77,6 @@
             app:fabSize="normal"
             app:tint="@color/white" />
 
-        <!-- Like Button -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_like"
             android:layout_width="wrap_content"
