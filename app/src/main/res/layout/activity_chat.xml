@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context=".ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -15,10 +16,12 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,35 +31,49 @@
 
             <ImageView
                 android:id="@+id/back_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back" android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:contentDescription="Quay lại" />
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back"
+                android:background="?attr/selectableItemBackgroundBorderless" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_partner_avatar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/bg_avatar_circle" app:civ_border_width="0.5dp"
-                app:civ_border_color="@color/gray" />
+                android:layout_marginStart="12dp"
+                android:src="@drawable/bg_avatar_circle"
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/white" />
 
             <TextView
                 android:id="@+id/chat_partner_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="16dp"
                 android:layout_weight="1"
+                android:layout_marginStart="12dp"
                 android:text="Tên đối tác chat"
-                android:textColor="@color/white"
+                android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:maxLines="1"
                 android:ellipsize="end" />
 
+            <ImageView
+                android:id="@+id/button_block"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_block"
+                android:background="?attr/selectableItemBackgroundBorderless" />
+
+            <ImageView
+                android:id="@+id/button_video_call"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_video_call"
+                android:background="?attr/selectableItemBackgroundBorderless" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -66,46 +83,58 @@
         android:layout_height="0dp"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/message_input_layout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_chat"
+        app:layout_constraintBottom_toTopOf="@id/message_input_layout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_chat"
-        tools:listitem="@layout/item_message_sent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_message_sent_bubble" />
+
 
     <LinearLayout
-    android:id="@+id/message_input_layout"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical"
-    android:padding="8dp"
-    android:background="@color/white"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
-
-    <EditText
-        android:id="@+id/edit_text_message"
+        android:id="@+id/message_input_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:hint="Nhập tin nhắn..."
-        android:maxLines="4"
-        android:background="@drawable/bg_message_input" android:padding="12dp"
-        android:inputType="textMultiLine"
-        android:imeOptions="actionSend" />
+        android:minHeight="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <ImageView
-        android:id="@+id/button_send_message"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:src="@drawable/ic_send_message" android:background="@drawable/bg_send_button" android:clickable="true"
-        android:focusable="true"
-        android:padding="12dp"
-        android:contentDescription="Gửi tin nhắn" />
+        <ImageView
+            android:id="@+id/button_send_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_image"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/edit_text_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Nhập tin nhắn..."
+            android:maxLines="4"
+            android:background="@drawable/bg_message_input"
+            android:padding="12dp"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionSend" />
+
+        <ImageView
+            android:id="@+id/button_send_message"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_send_message"
+            android:background="@drawable/bg_send_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
