@@ -37,6 +37,8 @@
             android:contentDescription="Love icon" />
     </RelativeLayout>
 
+
+
     <!-- Subtitle Text -->
     <TextView
         android:layout_width="match_parent"
@@ -61,9 +63,8 @@
         android:layout_marginBottom="24dp"
         android:layout_marginTop="20dp" />
 
-    <!-- Email / Phone Field -->
     <EditText
-        android:id="@+id/editEmail"
+        android:id="@+id/editPhone"
         android:hint="Số điện thoại"
         android:inputType="phone"
         android:layout_width="match_parent"
@@ -143,5 +144,15 @@
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quên mật khẩu?"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
