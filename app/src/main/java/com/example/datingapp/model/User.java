@@ -7,6 +7,8 @@ public class User implements Serializable {
     private String uid;
     private String name;
     private String gender;
+    private transient double distanceKm;
+
     private String bio;
     private int age; // năm sinh
     private List<String> favorites;
@@ -14,6 +16,8 @@ public class User implements Serializable {
     private Double latitude;
     private Double longitude;
     private String province;
+    private Boolean state;
+
     private int height;
     // Bắt buộc phải có constructor rỗng cho Firestore
     public User() {}
@@ -97,6 +101,14 @@ public class User implements Serializable {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
+    public Boolean getState() {
+        return state;
+    }
+    public void setState(Boolean state) {
+        this.state = state;
+    }
+
+
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
 
@@ -132,11 +144,16 @@ public class User implements Serializable {
                 '}';
     }
 
-    public String getFirstImg(){
-        if (imgUrls != null){
+    public String getFirstImg() {
+        if (imgUrls != null && !imgUrls.isEmpty()) { // Kiểm tra cả null và rỗng
             return imgUrls.get(0);
         }
-        return "";
+        return null; // Trả về null thay vì chuỗi rỗng
     }
-
+    public double getDistanceKm() {
+        return distanceKm;
+    }
+    public void setDistanceKm(double dist) {
+        this.distanceKm = distanceKm;
+    }
 }

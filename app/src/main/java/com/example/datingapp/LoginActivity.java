@@ -1,156 +1,178 @@
 package com.example.datingapp;
 
-import android.content.Context; // Thêm import này
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth; // Thêm import Firebase Auth
-import com.google.firebase.firestore.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText editPhone, editPassword;
-    Button btnLogin;
-    TextView textToLogin;
-    ImageView showPassword;
-    // Biến trạng thái để theo dõi mật khẩu đang hiển thị hay ẩn
+    private EditText editPhone, editPassword;
+    private Button btnLogin;
+    private TextView textToRegister, textForgotPassword;
+    private ImageView showPassword;
     private boolean isPasswordVisible = false;
-    FirebaseFirestore db;
-    // Khai báo FirebaseAuth để quản lý người dùng đăng nhập
-    FirebaseAuth mAuth; // Thêm dòng này
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "LoginPrefs";
+    private static final String KEY_PHONE = "phone";
+    private static final String KEY_PASSWORD = "password";
+    private static final String KEY_REMEMBER_ME = "rememberMe";
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        editPhone = findViewById(R.id.editEmail);
+        editPhone = findViewById(R.id.editPhone);
         editPassword = findViewById(R.id.editPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        textToLogin = findViewById(R.id.textToLogin);
+        textToRegister = findViewById(R.id.textToLogin);
         showPassword = findViewById(R.id.showPassword);
+        textForgotPassword = findViewById(R.id.textForgotPassword);
 
         db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance(); // Khởi tạo FirebaseAuth
+        mAuth = FirebaseAuth.getInstance();
+        sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
 
-        showPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                togglePasswordVisibility(editPassword, showPassword, !isPasswordVisible);
-                isPasswordVisible = !isPasswordVisible; // Cập nhật trạng thái
-            }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Đang đăng nhập, vui lòng đợi...");
+        progressDialog.setCancelable(false);
+
+        loadLoginCredentials();
+
+        showPassword.setOnClickListener(v -> {
+            togglePasswordVisibility(editPassword, showPassword, !isPasswordVisible);
+            isPasswordVisible = !isPasswordVisible;
         });
-        // Điều hướng đến đăng ký nếu chưa có tài khoản
-        textToLogin.setOnClickListener(v -> {
-            startActivity(new Intent(this, RegisterActivity.class));
-        });
 
-        // Xử lý nút đăng nhập
-        btnLogin.setOnClickListener(v -> {
-            String phone = editPhone.getText().toString().trim();
-            String password = editPassword.getText().toString().trim();
+        textToRegister.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
+        textForgotPassword.setOnClickListener(v -> startActivity(new Intent(this, ForgotPasswordActivity.class)));
 
-            if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                return;
-            }
+        btnLogin.setOnClickListener(v -> attemptLogin());
+    }
 
-            String hashedPassword = hashPassword(password);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        String uid = prefs.getString("uid", null);
+        if (uid != null) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
 
-            db.collection("users")
-                    .whereEqualTo("phone", phone)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                            DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                            String storedHashedPassword = document.getString("password");
-                            String uid = document.getString("uid"); // Lấy UID ngay từ đây
+    private void attemptLogin() {
+        String phone = editPhone.getText().toString().trim();
+        String password = editPassword.getText().toString().trim();
 
-                            if (hashedPassword.equals(storedHashedPassword)) {
-                                // Đăng nhập thành công
-                                Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(phone) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                                // --- Bắt đầu quan trọng: Xử lý UID và chuyển hướng ---
+        String hashedPassword = hashPassword(password);
+        if (hashedPassword == null) {
+            Toast.makeText(this, "Lỗi khi xử lý mật khẩu.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-                                // 1. Lưu UID mới vào SharedPreferences
-                                // Luôn đảm bảo UID của người dùng hiện tại được lưu chính xác
-                                SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                                prefs.edit().putString("uid", uid).apply();
-                                Log.d("Login", "UID mới đã được lưu vào SharedPreferences: " + uid);
+        progressDialog.show();
 
-                                // 2. (Tùy chọn nhưng nên làm) Đăng nhập Firebase Auth (nếu bạn chưa làm trong RegisterActivity)
-                                // Nếu bạn đang dùng Firebase Auth để quản lý trạng thái đăng nhập,
-                                // bạn sẽ cần phải đăng nhập người dùng vào Auth system của Firebase.
-                                // Tuy nhiên, vì bạn đang quản lý bằng sđt/mật khẩu và tự hash,
-                                // phần này có thể không cần thiết nếu bạn chỉ dùng Firestore cho data.
-                                // Nhưng nếu bạn muốn getCurrentUser() của Firebase Auth trả về user này, bạn cần làm điều đó.
-                                // Để đơn giản cho vấn đề hiện tại, chúng ta tập trung vào UID từ Firestore.
+        db.collection("users")
+                .whereEqualTo("phone", phone)
+                .get()
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                        String storedHashedPassword = document.getString("password");
+                        String uid = document.getString("uid");
 
-                                // 3. Kiểm tra hồ sơ trong Firestore
-                                db.collection("profiles").document(uid).get()
-                                        .addOnSuccessListener(profileDoc -> {
-                                            String gender = profileDoc.getString("gender");
+                        if (hashedPassword.equals(storedHashedPassword)) {
+                            Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                            saveLoginCredentials(phone, password);
 
-                                            Log.d("check ho so", "Giới tính từ hồ sơ: " + gender);
+                            SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                            prefs.edit().putString("uid", uid).apply();
+                            Log.d("Login", "UID người dùng đã lưu: " + uid);
 
-                                            if (gender != null && !gender.isEmpty()) {
-                                                // Người dùng đã có hồ sơ -> chuyển đến MainActivity
-                                                Log.d("check ho so", "Có hồ sơ. Chuyển đến MainActivity.");
-                                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                                // Xóa tất cả các activity cũ trên stack, đảm bảo MainActivity là activity gốc mới
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                startActivity(intent);
-                                            } else {
-                                                // Người dùng mới hoặc hồ sơ chưa hoàn chỉnh -> chuyển đến CreateProfileActivity
-                                                Log.d("check ho so", "Không có hồ sơ hoặc hồ sơ chưa hoàn chỉnh. Chuyển đến CreateProfileActivity.");
-                                                Intent intent = new Intent(LoginActivity.this, CreateProfileActivity.class);
-                                                // Không cần truyền UID qua Intent nữa vì CreateProfileActivity sẽ tự lấy từ SharedPreferences/Firebase Auth
-                                                // intent.putExtra("uid", uid);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Đảm bảo CreateProfileActivity là activity gốc mới
-                                                startActivity(intent);
+                            FirebaseMessaging.getInstance().getToken()
+                                    .addOnCompleteListener(tokenTask -> {
+                                        if (tokenTask.isSuccessful()) {
+                                            String token = tokenTask.getResult();
+                                            if (token != null && !token.isEmpty()) {
+                                                db.collection("profiles").document(uid)
+                                                        .update("fcmToken", token)
+                                                        .addOnSuccessListener(aVoid -> Log.d("FCM", "FCM token đã lưu vào Firestore: " + token))
+                                                        .addOnFailureListener(e -> Log.e("FCM", "Lỗi lưu token: ", e));
                                             }
-                                            // Gọi finish() sau khi chuyển hướng và làm sạch stack
-                                            finish();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            // Xử lý lỗi khi kiểm tra hồ sơ
-                                            Log.e("Login", "Lỗi khi kiểm tra hồ sơ: ", e);
-                                            Toast.makeText(LoginActivity.this, "Lỗi khi kiểm tra hồ sơ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                            // Trong trường hợp lỗi kiểm tra hồ sơ, vẫn có thể chuyển hướng để tránh kẹt
-                                            // Hoặc xử lý lỗi cụ thể hơn nếu cần.
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class); // Vẫn chuyển về MainActivity như một fallback
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent);
-                                            finish();
-                                        });
+                                        } else {
+                                            Log.e("FCM", "Không lấy được FCM token", tokenTask.getException());
+                                        }
+                                    });
 
-                                // --- Kết thúc quan trọng ---
-
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
-                            }
+                            progressDialog.show();
+                            db.collection("profiles").document(uid).get()
+                                    .addOnSuccessListener(profileDoc -> {
+                                        progressDialog.dismiss();
+                                        String gender = profileDoc.getString("gender");
+                                        Intent intent;
+                                        if (gender != null && !gender.isEmpty()) {
+                                            intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        } else {
+                                            intent = new Intent(LoginActivity.this, CreateProfileActivity.class);
+                                        }
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        progressDialog.dismiss();
+                                        Log.e("Login", "Lỗi kiểm tra hồ sơ", e);
+                                        Toast.makeText(LoginActivity.this, "Lỗi kiểm tra hồ sơ: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                    });
                         } else {
-                            Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Mật khẩu không đúng", Toast.LENGTH_SHORT).show();
                         }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(LoginActivity.this, "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e("Login", "Error", e);
-                    });
-        });
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Số điện thoại không tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    Toast.makeText(LoginActivity.this, "Lỗi truy vấn: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("Login", "Lỗi Firestore", e);
+                });
     }
 
     private String hashPassword(String password) {
@@ -172,16 +194,32 @@ public class LoginActivity extends AppCompatActivity {
 
     private void togglePasswordVisibility(EditText editText, ImageView toggleImageView, boolean showPassword) {
         if (showPassword) {
-            // Hiển thị mật khẩu: chuyển InputType từ password sang text
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            toggleImageView.setImageResource(R.drawable.ic_hide_password); // ⭐ Đổi icon thành mắt gạch ⭐
+            toggleImageView.setImageResource(R.drawable.ic_hide_password);
         } else {
-            // Ẩn mật khẩu: chuyển InputType từ text sang password
             editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            toggleImageView.setImageResource(R.drawable.ic_show_password); // ⭐ Đổi icon thành mắt mở ⭐
+            toggleImageView.setImageResource(R.drawable.ic_show_password);
         }
-        // Di chuyển con trỏ về cuối văn bản sau khi thay đổi InputType
         editText.setSelection(editText.getText().length());
     }
 
+    private void loadLoginCredentials() {
+        boolean rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false);
+        if (rememberMe) {
+            String phone = sharedPreferences.getString(KEY_PHONE, "");
+            String password = sharedPreferences.getString(KEY_PASSWORD, "");
+            editPhone.setText(phone);
+            editPassword.setText(password);
+            Log.d("Login", "Đã tự động điền thông tin đăng nhập.");
+        }
+    }
+
+    private void saveLoginCredentials(String phone, String password) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_PHONE, phone);
+        editor.putString(KEY_PASSWORD, password);
+        editor.putBoolean(KEY_REMEMBER_ME, true);
+        editor.apply();
+        Log.d("Login", "Đã lưu thông tin đăng nhập.");
+    }
 }

@@ -20,10 +20,16 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
 
     private Context context;
     private List<Match> matchList;
+    private OnItemClickListener listener;
 
-    public MatchesAdapter(Context context, List<Match> matchList) {
+    public interface OnItemClickListener {
+        void onItemClick(Match match);
+    }
+
+    public MatchesAdapter(Context context, List<Match> matchList, OnItemClickListener listener) {
         this.context = context;
         this.matchList = matchList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -38,10 +44,15 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         Match match = matchList.get(position);
         holder.nameTextView.setText(match.getNameMatcher());
 
-        // Sử dụng Glide hoặc Picasso để tải ảnh từ URL (nếu có)
         Glide.with(context)
                 .load(match.getUrlAvartar())
                 .into(holder.avatarImageView);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(match);
+            }
+        });
     }
 
     @Override
@@ -49,7 +60,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         return matchList.size();
     }
 
-    public class MatchViewHolder extends RecyclerView.ViewHolder {
+    public static class MatchViewHolder extends RecyclerView.ViewHolder {
 
         ImageView avatarImageView;
         TextView nameTextView;
@@ -61,4 +72,3 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchVie
         }
     }
 }
-

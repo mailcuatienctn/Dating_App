@@ -1,201 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll_profile"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
     tools:context=".ProfileDetailActivity">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- ⭐ Toolbar với nút back ⭐ -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingBottom="24dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        app:title="Hồ sơ"
+        app:titleTextColor="@android:color/black"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        android:elevation="4dp" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/image_avatar"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_marginBottom="16dp"
-            android:scaleType="centerCrop"
-            app:strokeWidth="2dp"
-            android:contentDescription="Ảnh đại diện" />
-
-        <TextView
-            android:id="@+id/text_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Trần Vịnh Tiến"
-            android:textSize="26sp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:maxLines="1"
-            android:ellipsize="end" />
-
-        <TextView
-            android:id="@+id/text_height"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="160 cm"
-            android:textSize="18sp"
-            android:textColor="#666666" android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:drawableStart="@drawable/ic_height"
-            android:drawablePadding="8dp"
-            android:layout_gravity="start"
-            android:paddingTop="15dp"
-            android:layout_marginStart="16dp" />
-
-        <TextView
-            android:id="@+id/text_age_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Nam, 22 tuổi"
-            android:textSize="18sp"
-            android:textColor="#666666" android:layout_marginTop="4dp"
-            android:layout_marginBottom="12dp"
-            android:drawableStart="@drawable/ic_person"
-            android:drawablePadding="8dp"
-            android:layout_gravity="start"
-            android:paddingTop="15dp"
-            android:layout_marginStart="16dp" />
+    <!-- ⭐ Nội dung scrollable ⭐ -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@android:color/white">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp"
-            android:gravity="center_vertical">
+            android:gravity="center_horizontal"
+            android:paddingBottom="24dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:layout_marginBottom="16dp"
+                android:scaleType="centerCrop"
+                app:strokeWidth="2dp"
+                android:contentDescription="Ảnh đại diện" />
 
             <TextView
+                android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đang ở"
-                android:textSize="16sp"
+                android:textSize="26sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/text_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:textColor="#666666"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:drawableStart="@drawable/ic_height"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_location"
+                android:layout_gravity="start"
+                android:paddingTop="15dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:id="@+id/text_age_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:drawableStart="@drawable/ic_person"
+                android:drawablePadding="8dp"
+                android:layout_gravity="start"
+                android:paddingTop="15dp"
+                android:layout_marginStart="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đang ở"
+                    android:textSize="16sp"
+                    android:textColor="#666666"
+                    android:drawablePadding="8dp"
+                    android:drawableStart="@drawable/ic_location"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/text_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="#666666"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#444444"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="24dp"
+                android:drawableStart="@drawable/ic_introduce"
                 android:layout_marginEnd="8dp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp" />
+
             <TextView
-                android:id="@+id/text_location"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="Đà Nẵng, Việt Nam"
+                android:text="Sở thích"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/text_hobbies"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:textColor="#666666"
-                android:ellipsize="end"
-                android:maxLines="1" />
-        </LinearLayout>
+                android:textColor="#444444"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp" />
 
-        <TextView
-            android:id="@+id/text_bio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Xin chào! Tôi là sinh viên IT, thích công nghệ và tìm kiếm người đặc biệt! Tôi thích chơi game, đọc sách và khám phá những điều mới mẻ trong cuộc sống."
-            android:textSize="16sp"
-            android:textColor="#444444"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="24dp"
-            android:drawableStart="@drawable/ic_introduce"
-            android:layout_marginEnd="8dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#EEEEEE"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="24dp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sở thích"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
-
-        <TextView
-            android:id="@+id/text_hobbies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Chơi game, đọc sách, du lịch, nấu ăn, tập gym, nghe nhạc, xem phim"
-            android:textSize="16sp"
-            android:textColor="#444444"
-            android:lineSpacingExtra="4dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#EEEEEE"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="24dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thư viện ảnh"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_photos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:paddingHorizontal="16dp"
-            android:clipToPadding="false"
-            android:layout_marginBottom="32dp" />
-
-        <LinearLayout
-            android:id="@+id/linear_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingVertical="16dp"
-            android:layout_marginTop="24dp"> <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_dislike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:src="@drawable/ic_close_white"
-            android:contentDescription="Không thích"
-            app:tint="@android:color/white"
-            app:backgroundTint="@color/red"
-            app:fabSize="normal" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_like"
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:src="@drawable/ic_heart_white"
-                android:contentDescription="Thích"
-                app:tint="@android:color/white"
-                app:backgroundTint="@color/green"
-                app:fabSize="normal" />
-        </LinearLayout>
+                android:text="Thư viện ảnh"
+                android:textSize="20sp"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp" />
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="16dp"
+                android:clipToPadding="false"
+                android:layout_marginBottom="32dp" />
+
+            <LinearLayout
+                android:id="@+id/linear_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="16dp">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_dislike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:contentDescription="Không thích"
+                    android:src="@drawable/ic_close_white"
+                    app:backgroundTint="#FF9E80"
+                    app:fabSize="normal"
+                    app:tint="@color/white" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:contentDescription="Thích"
+                    android:src="@drawable/ic_heart_white"
+                    app:backgroundTint="#FF9E80"
+                    app:fabSize="normal"
+                    app:tint="@android:color/white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

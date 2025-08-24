@@ -14,82 +14,108 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Ảnh người dùng -->
         <ImageView
             android:id="@+id/imgUser"
             android:layout_width="match_parent"
-            android:layout_height="680dp" android:scaleType="centerCrop"
+            android:layout_height="680dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_avatar_placeholder"
             android:contentDescription="Ảnh người dùng" />
 
+        <!-- Gradient làm nền -->
         <View
             android:layout_width="match_parent"
-            android:layout_height="120dp" android:layout_gravity="bottom" android:background="@drawable/gradient_bottom_to_top" /> <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
-        android:padding="16dp">
+            android:layout_height="200dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="400dp"
+            android:background="@drawable/gradient_bottom_to_top" />
 
+        <!-- Thông tin người dùng -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="4dp">
+            android:layout_height="143dp"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:paddingBottom="100dp">
 
-            <TextView
-                android:id="@+id/tvName"
+            <!-- Tên, tuổi, khoảng cách -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tên người dùng"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:shadowColor="@android:color/black"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvAge"
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:text="Tên người dùng"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvAge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:text=", 23"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:text="(5.3 km)"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- Địa điểm -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=", 23"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:shadowColor="@android:color/black"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2" />
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="location icon"
+                    android:src="@drawable/ic_location" />
+
+                <TextView
+                    android:id="@+id/tvLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:shadowColor="@android:color/black"
+                    android:shadowDx="1"
+                    android:shadowDy="1"
+                    android:shadowRadius="2"
+                    android:text="TP Hồ Chí Minh"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_location"
-                android:contentDescription="location icon"
-                android:tint="@color/white"
-                />
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:text="TP Hồ Chí Minh"
-                android:textSize="16sp"
-                android:textColor="@android:color/white"
-                android:shadowColor="@android:color/black"
-                android:shadowDx="1"
-                android:shadowDy="1"
-                android:shadowRadius="2" />
-        </LinearLayout>
-
-    </LinearLayout>
     </FrameLayout>
 </androidx.cardview.widget.CardView>

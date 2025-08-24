@@ -13,6 +13,5 @@ public class Swipe {
         this.liked = liked;
     }
 
-    // Getter + Setter
 }
 

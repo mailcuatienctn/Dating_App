@@ -1,15 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scroll_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     tools:context=".UserFragment">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_profile"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- ⭐ Icon tạm dừng ghép đôi mới thêm ⭐ -->
+            <ImageView
+                android:id="@+id/icon_pause_matching"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/icon_change_password"
+                android:padding="12dp"
+                android:src="@drawable/ic_pause_matching"
+                android:contentDescription="Tạm dừng ghép đôi"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Icon đổi mật khẩu mới thêm -->
+            <ImageView
+                android:id="@+id/icon_change_password"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_toStartOf="@id/icon_logout"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@drawable/ic_change_password"
+                android:contentDescription="Đổi mật khẩu"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hồ sơ"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:id="@+id/icon_logout"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@drawable/ic_logout"
+                android:contentDescription="Đăng xuất"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_profile"> <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +88,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_avatar"
             android:layout_width="match_parent"
-            android:layout_height="320dp"
+            android:layout_height="400dp"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
             app:strokeWidth="2dp"
@@ -71,22 +140,24 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
-            android:gravity="center_vertical"> <TextView
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Đang ở"
-            android:textSize="16sp"
-            android:textColor="#666666"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_location"
-            android:layout_marginEnd="8dp" /> <TextView
-            android:id="@+id/text_location"
-            android:layout_width="0dp" android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Đà Nẵng, Việt Nam"
-            android:textSize="16sp"
-            android:textColor="#666666"
-            android:ellipsize="end"
-            android:maxLines="1" />
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Đang ở"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_location"
+                android:layout_marginEnd="8dp" />
+            <TextView
+                android:id="@+id/text_location"
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Đà Nẵng, Việt Nam"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:ellipsize="end"
+                android:maxLines="1" />
         </LinearLayout>
 
         <TextView
@@ -102,8 +173,6 @@
             android:drawableStart="@drawable/ic_introduce"
             android:layout_marginEnd="8dp"
             />
-
-
 
         <View
             android:layout_width="match_parent"
@@ -175,4 +244,5 @@
             android:paddingVertical="12dp"
             app:cornerRadius="8dp" />
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>

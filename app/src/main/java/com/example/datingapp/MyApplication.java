@@ -15,9 +15,9 @@ public class MyApplication extends Application {
 
         // Khởi tạo Cloudinary SDK với thông tin tài khoản của bạn
         Map<String, String> config = new HashMap<>();
-        config.put("cloud_name", "dmmf5ximm"); // Thay thế bằng Cloud Name của bạn (ví dụ: "my-dating-app-cloud")
-        config.put("api_key", "975318165359329");       // Thay thế bằng API Key của bạn
-        config.put("api_secret", "ydn0aOvPAOobKRity9EfdnAlzRE"); // Thay thế bằng API Secret của bạn
+        config.put("cloud_name", "dmmf5ximm");
+        config.put("api_key", "975318165359329");
+        config.put("api_secret", "ydn0aOvPAOobKRity9EfdnAlzRE");
 
         MediaManager.init(this, config);
     }

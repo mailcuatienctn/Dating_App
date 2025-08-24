@@ -75,10 +75,8 @@ public class LikerAdapter extends RecyclerView.Adapter<LikerAdapter.LikerViewHol
         // Handle item click
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, ProfileDetailActivity.class);
-            // Truyền thông tin người dùng qua Intent
             intent.putExtra(ProfileDetailActivity.EXTRA_USER_ID, liker.getUid());
-            // Thêm flag vào Intent dưới dạng chuỗi "1"
-            intent.putExtra("EXTRA_FLAG", "2"); // Hoặc bất kỳ giá trị nào bạn muốn            context.startActivity(intent);
+            intent.putExtra("EXTRA_FLAG", "2");
 
             if (listener != null) {
                 listener.onItemClick(liker);

@@ -16,38 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
-            android:text="Cùng tìm nửa kia nào?"
+            android:text="Cùng tìm nửa kia của bạn nào?"
             android:textColor="#333333"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/edit_location"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_edittext"
-            android:drawableStart="@drawable/ic_location"
-            android:hint="Chọn tỉnh/thành"
-            android:focusable="false"
-            android:clickable="true"
-            android:paddingStart="12dp"
-            android:gravity="center_vertical"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:inputType="none" />
-
-        <EditText
-            android:id="@+id/edit_gender"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_edittext"
-            android:drawableStart="@drawable/ic_user"
-            android:hint="Giới tính"
-            android:paddingStart="12dp"
-            android:focusable="false"
-            android:clickable="true" />
 
         <Button
             android:id="@+id/btnFind"

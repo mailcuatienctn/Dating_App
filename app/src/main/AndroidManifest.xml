@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
         android:name=".MyApplication"
@@ -19,6 +34,7 @@
         android:theme="@style/Theme.DatingApp"
         tools:targetApi="31">
 
+        <!-- Login as Launcher -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -28,33 +44,60 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".RunExampleChat"
-            android:exported="true" />
-        <activity
-            android:name=".ChatActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ProfileDetailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".DiscoveryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SwipeActivity"
-            android:exported="true" />
-        <activity
-            android:name=".EditUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreateProfileActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true" />
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_laucher"/>
+
+        <!-- Main -->
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
+        <!-- ChatActivity with parent for back to MainActivity -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+
+        <!-- Profile -->
+        <activity android:name=".ProfileDetailActivity" android:exported="true" />
+        <activity android:name=".EditProfileActivity" android:exported="true" />
+        <activity android:name=".CreateProfileActivity" android:exported="true" />
+        <activity android:name=".EditUserActivity" android:exported="false" />
+        <activity android:name=".RegisterActivity" android:exported="true" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
+
+        <!-- Video Call -->
+        <activity android:name=".VideoCallActivity" android:exported="true" />
+        <activity android:name=".VoiceCallActivity" android:exported="true" />
+        <activity
+            android:name=".IncomingCallActivity"
+            android:exported="true"
+            android:showOnLockScreen="true"
+            android:turnScreenOn="true" />
+
+        <!-- Others -->
+        <activity android:name=".DiscoveryActivity" android:exported="false" />
+        <activity android:name=".SwipeActivity" android:exported="true" />
+        <activity android:name=".RunExampleChat" android:exported="true" />
+        <activity android:name=".ChangePasswordActivity" android:exported="false" />
+        <activity android:name=".FilterActivity" android:exported="false" />
+        <activity android:name=".SendImageBottomSheet" android:exported="false" />
+
+        <!-- FCM Service -->
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

@@ -5,12 +5,6 @@ import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar; // Import Toolbar for back button setup
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,24 +12,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.example.datingapp.adapter.PhotoAdapter;
 import com.example.datingapp.model.User;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.firebase.Timestamp; // ⭐ IMPORT này cần thiết ⭐
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager; // ⭐ IMPORT này cần thiết nếu dùng LocalBroadcastManager ⭐
-
+import com.google.firebase.firestore.SetOptions;
 
 import java.io.IOException;
 import java.util.*;
 
 public class ProfileDetailActivity extends AppCompatActivity {
+
     public static final String EXTRA_USER_PROFILE = "extra_user_profile";
     public static final String EXTRA_USER_ID = "extra_user_id";
-    public static final String ACTION_NAVIGATE_TO_CHAT = "com.example.datingapp.NAVIGATE_TO_CHAT"; // ⭐ Định nghĩa action ⭐
+    public static final String ACTION_NAVIGATE_TO_CHAT = "com.example.datingapp.NAVIGATE_TO_CHAT";
 
     private static final String TAG = "ProfileDetailActivity";
 
@@ -49,14 +49,15 @@ public class ProfileDetailActivity extends AppCompatActivity {
     private LinearLayout linearButtons;
     private FloatingActionButton btnDislike, btnLike;
 
-    private User displayedUser; // <-- user đang được hiển thị
+    private User displayedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_detail);
 
-        // Ánh xạ view
+        boolean shouldHideLikeDislike = getIntent().getBooleanExtra("EXTRA_HIDE_LIKE_DISLIKE", false);
+
         imageAvatar = findViewById(R.id.image_avatar);
         textName = findViewById(R.id.text_name);
         textAgeGender = findViewById(R.id.text_age_gender);
@@ -76,38 +77,30 @@ public class ProfileDetailActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Lấy UID người dùng hiện tại
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         SharedPreferences prefs = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
         currentUserId = prefs.getString("uid", null);
 
-//        // ⭐ Cài đặt Toolbar (nếu bạn có Toolbar trong activity_profile_detail.xml) ⭐
-//        Toolbar toolbar = findViewById(R.id.toolbar); // Đảm bảo bạn có ID này trong XML
-//        setSupportActionBar(toolbar);
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
-//            getSupportActionBar().setTitle(""); // Tùy chỉnh tiêu đề nếu cần
-//        }
-//        // Xử lý sự kiện click nút back trên toolbar
-//        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
-        // Lấy dữ liệu từ Intent
         String flag = getIntent().getStringExtra("EXTRA_FLAG");
         String targetUserId = getIntent().getStringExtra(EXTRA_USER_ID);
         displayedUser = (User) getIntent().getSerializableExtra(EXTRA_USER_PROFILE);
 
-        // Ẩn nút Like/Dislike nếu đang xem hồ sơ của chính mình hoặc không có currentUserId
-        if (currentUserId == null || (targetUserId != null && currentUserId.equals(targetUserId))) {
+        if (shouldHideLikeDislike || currentUserId == null || (targetUserId != null && currentUserId.equals(targetUserId))) {
             linearButtons.setVisibility(View.GONE);
         } else {
             linearButtons.setVisibility(View.VISIBLE);
         }
 
-        // ⭐ Xử lý tải dữ liệu hồ sơ dựa trên flag hoặc targetUserId ⭐
         if ("1".equals(flag) && displayedUser != null) {
-            // Nếu là user từ trang Home (đã có object User)
             displayUserProfile(displayedUser);
         } else if (targetUserId != null) {
-            // Nếu là user từ "likes received" HOẶC không có flag/displayedUser, cần fetch từ Firestore
             db.collection("profiles")
                     .document(targetUserId)
                     .get()
@@ -115,74 +108,59 @@ public class ProfileDetailActivity extends AppCompatActivity {
                         if (documentSnapshot.exists()) {
                             displayedUser = documentSnapshot.toObject(User.class);
                             if (displayedUser != null) {
-                                displayedUser.setUid(targetUserId); // Set UID thủ công nếu không có trong model User
+                                displayedUser.setUid(targetUserId);
                                 displayUserProfile(displayedUser);
                             } else {
                                 Toast.makeText(this, "Không thể đọc thông tin hồ sơ.", Toast.LENGTH_SHORT).show();
-                                finish(); // Đóng Activity nếu không thể đọc
+                                finish();
                             }
                         } else {
-                            Log.d(TAG, "Không tìm thấy hồ sơ với uid = " + targetUserId);
                             Toast.makeText(this, "Hồ sơ không tồn tại.", Toast.LENGTH_SHORT).show();
-                            finish(); // Đóng Activity nếu không tìm thấy hồ sơ
+                            finish();
                         }
                     })
                     .addOnFailureListener(e -> {
                         Log.e(TAG, "Lỗi khi lấy dữ liệu: " + e.getMessage());
                         Toast.makeText(this, "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
-                        finish(); // Đóng Activity khi có lỗi
+                        finish();
                     });
         } else {
-            // Trường hợp không có đủ thông tin để hiển thị hồ sơ
             Toast.makeText(this, "Không thể tải hồ sơ. Thiếu thông tin.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        // ⭐ Listener cho nút Like ⭐
         btnLike.setOnClickListener(v -> {
             if (currentUserId == null) {
-                Toast.makeText(this, "Vui lòng đăng nhập để thực hiện thao tác này.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng đăng nhập để thực hiện.", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (displayedUser != null && !TextUtils.isEmpty(displayedUser.getUid())) {
                 saveSwipe(currentUserId, true, displayedUser.getUid());
-            } else {
-                Toast.makeText(this, "Thông tin người dùng chưa sẵn sàng.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // ⭐ Listener cho nút Dislike ⭐
         btnDislike.setOnClickListener(v -> {
             if (currentUserId == null) {
-                Toast.makeText(this, "Vui lòng đăng nhập để thực hiện thao tác này.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng đăng nhập để thực hiện.", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (displayedUser != null && !TextUtils.isEmpty(displayedUser.getUid())) {
                 saveSwipe(currentUserId, false, displayedUser.getUid());
-            } else {
-                Toast.makeText(this, "Thông tin người dùng chưa sẵn sàng.", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    // ⭐ Xử lý nút back trên Toolbar chuẩn (nếu dùng) ⭐
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
     private void displayUserProfile(User user) {
         textName.setText(user.getName());
-        // Giả định user.getAge() là năm sinh. Nếu là tuổi thật, hãy bỏ (2025 -)
-        textAgeGender.setText((2025 - user.getAge()) + " tuổi • " + user.getGender());
+        textAgeGender.setText(user.getAge() + " tuổi • " + user.getGender());
         textBio.setText(!TextUtils.isEmpty(user.getBio()) ? user.getBio() : "Chưa có mô tả bản thân");
-        textHeight.setText(""+user.getHeight() + " cm");
-        List<String> favorites = user.getFavorites(); // Giả định trường này là `favorites` thay vì `interests`
+        textHeight.setText(user.getHeight() + " cm");
+
+        List<String> favorites = user.getFavorites();
         if (favorites != null && !favorites.isEmpty()) {
-            textHobbies.setText("Sở thích: " + TextUtils.join(", ", favorites));
+            textHobbies.setText(TextUtils.join(", ", favorites));
         } else {
-            textHobbies.setText("Chưa có sở thích nào.");
+            textHobbies.setText("Chưa có sở thích.");
         }
 
         if (user.getLatitude() != null && user.getLongitude() != null) {
@@ -191,11 +169,11 @@ public class ProfileDetailActivity extends AppCompatActivity {
                 List<Address> addresses = geocoder.getFromLocation(user.getLatitude(), user.getLongitude(), 1);
                 if (addresses != null && !addresses.isEmpty()) {
                     Address address = addresses.get(0);
-                    String locationDisplay = address.getAdminArea(); // Lấy tỉnh/thành phố
-                    if (TextUtils.isEmpty(locationDisplay) && address.getLocality() != null) { // Fallback nếu không có adminArea
-                        locationDisplay = address.getLocality();
+                    String location = address.getAdminArea();
+                    if (TextUtils.isEmpty(location) && address.getLocality() != null) {
+                        location = address.getLocality();
                     }
-                    textLocation.setText(!TextUtils.isEmpty(locationDisplay) ? locationDisplay : "Vị trí không xác định");
+                    textLocation.setText(!TextUtils.isEmpty(location) ? location : "Vị trí không xác định");
                 } else {
                     textLocation.setText("Vị trí không xác định");
                 }
@@ -215,114 +193,102 @@ public class ProfileDetailActivity extends AppCompatActivity {
             photoAdapter.notifyDataSetChanged();
         } else {
             imageAvatar.setImageResource(R.drawable.bg_avatar_circle);
-            photoList.clear(); // Clear any previous photos
+            photoList.clear();
             photoAdapter.notifyDataSetChanged();
         }
     }
 
     private void saveSwipe(String currentUid, boolean isLiked, String targetUid) {
-        if (TextUtils.isEmpty(currentUid) || TextUtils.isEmpty(targetUid)) {
-            Log.e(TAG, "currentUid or targetUid is empty. Cannot save swipe.");
-            return;
+        finishWithViewedUid();
+        if (TextUtils.isEmpty(currentUid) || TextUtils.isEmpty(targetUid)) return;
+
+        String collection = isLiked ? "likes" : "dislikes";
+        Map<String, Object> data = new HashMap<>();
+        data.put("timestamp", FieldValue.serverTimestamp());
+        if (isLiked) {
+            data.put("liked", 1);
         }
 
-        String swipeCollection = isLiked ? "likes" : "dislikes";
-        Map<String, Object> swipeData = new HashMap<>();
-        swipeData.put("timestamp", FieldValue.serverTimestamp());
-
-        db.collection("swipes")
-                .document(currentUid)
-                .collection(swipeCollection)
-                .document(targetUid)
-                .set(swipeData)
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, isLiked ? "Đã thích!" : "Đã bỏ qua.", Toast.LENGTH_SHORT).show();
-
+        db.collection("swipes").document(currentUid)
+                .collection(collection).document(targetUid)
+                .set(data)
+                .addOnSuccessListener(unused -> {
                     if (isLiked) {
-                        // Ghi nhận lượt thích đến cho người được thích
-                        Map<String, Object> receivedLikeData = new HashMap<>();
-                        receivedLikeData.put("timestamp", FieldValue.serverTimestamp());
-                        receivedLikeData.put("likerUid", currentUid);
+                        checkMatch(currentUid, targetUid);
+                        Map<String, Object> likerData = new HashMap<>();
+                        likerData.put("timestamp", FieldValue.serverTimestamp());
                         db.collection("profiles")
                                 .document(targetUid)
                                 .collection("likes_received")
                                 .document(currentUid)
-                                .set(receivedLikeData)
-                                .addOnSuccessListener(unused -> Log.d(TAG, "Lượt thích đã ghi vào likes_received của " + targetUid))
-                                .addOnFailureListener(e -> Log.e(TAG, "Lỗi ghi likes_received: " + e.getMessage()));
+                                .set(likerData);
+                    }
+                    Toast.makeText(this, isLiked ? "Bạn đã like!" : "Bạn đã bỏ qua!", Toast.LENGTH_SHORT).show();
+                });
 
+        Map<String, Object> fieldUpdate = new HashMap<>();
+        fieldUpdate.put(targetUid, 1);
+        db.collection("swipes").document(currentUid)
+                .set(fieldUpdate, SetOptions.merge());
+    }
 
-                        // Kiểm tra nếu người kia cũng đã like mình
-                        db.collection("swipes")
-                                .document(targetUid)
-                                .collection("likes")
-                                .document(currentUid)
-                                .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        // Cả hai đã thích nhau -> Match!
-                                        createMatch(currentUid, targetUid);
-                                    } else {
-                                        // Chỉ là like đơn phương, kết thúc activity
-                                        finish();
-                                    }
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e(TAG, "Lỗi khi kiểm tra like hai chiều: " + e.getMessage());
-                                    finish(); // Kết thúc activity ngay cả khi có lỗi kiểm tra
-                                });
+    private void checkMatch(String currentUid, String targetUid) {
+        db.collection("swipes")
+                .document(targetUid)
+                .collection("likes")
+                .document(currentUid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        createMatch(currentUid, targetUid);
                     } else {
-                        // Nếu là dislike, kết thúc activity ngay lập tức
-                        finish();
+                        finishWithViewedUid();
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Lỗi khi lưu hành động vuốt: " + e.getMessage());
-                    Toast.makeText(this, "Lỗi khi lưu thao tác", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Lỗi kiểm tra match: " + e.getMessage());
+                    finishWithViewedUid();
                 });
     }
 
     private void createMatch(String user1, String user2) {
-        Log.d(TAG, "Tạo match giữa " + user1 + " và " + user2);
-        Timestamp currentTimestamp = Timestamp.now(); // Sử dụng Timestamp từ Firebase
-
-        // Dữ liệu match cho user1
-        Map<String, Object> matchDataUser1 = new HashMap<>();
-        matchDataUser1.put("timestamp", currentTimestamp);
-        matchDataUser1.put("matchedWith", user2);
-        matchDataUser1.put("lastMessage", ""); // Khởi tạo tin nhắn cuối cùng
-        matchDataUser1.put("lastMessageTime", currentTimestamp); // Thời gian tin nhắn cuối cùng
+        Timestamp timestamp = Timestamp.now();
+        Map<String, Object> matchData = new HashMap<>();
+        matchData.put("timestamp", timestamp);
+        matchData.put("matchedWith", user2);
 
         db.collection("matches")
                 .document(user1)
                 .collection("matchedWith")
                 .document(user2)
-                .set(matchDataUser1)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Đã tạo match cho user1"))
-                .addOnFailureListener(e -> Log.e(TAG, "Lỗi tạo match cho user1: " + e.getMessage()));
+                .set(matchData);
 
-        // Dữ liệu match cho user2
-        Map<String, Object> matchDataUser2 = new HashMap<>();
-        matchDataUser2.put("timestamp", currentTimestamp);
-        matchDataUser2.put("matchedWith", user1);
-        matchDataUser2.put("lastMessage", ""); // Khởi tạo tin nhắn cuối cùng
-        matchDataUser2.put("lastMessageTime", currentTimestamp); // Thời gian tin nhắn cuối cùng
-
+        matchData.put("matchedWith", user1);
         db.collection("matches")
                 .document(user2)
                 .collection("matchedWith")
                 .document(user1)
-                .set(matchDataUser2)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Đã tạo match cho user2"))
-                .addOnFailureListener(e -> Log.e(TAG, "Lỗi tạo match cho user2: " + e.getMessage()));
+                .set(matchData);
 
-        Toast.makeText(this, "🎉 Bạn và người kia đã match!", Toast.LENGTH_LONG).show();
-
-        // ⭐ QUAN TRỌNG: Gửi broadcast để MainActivity biết và chuyển tab ⭐
-        // Sử dụng LocalBroadcastManager để gửi broadcast nội bộ ứng dụng
+        Toast.makeText(this, "🎉 Bạn đã match!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(ACTION_NAVIGATE_TO_CHAT);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 
-        finish(); // Kết thúc ProfileDetailActivity sau khi match được xử lý
+        finishWithViewedUid();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void finishWithViewedUid() {
+        if (displayedUser != null && displayedUser.getUid() != null) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra(EXTRA_USER_ID, displayedUser.getUid());  // Gửi User ID về cho Activity A
+            setResult(RESULT_OK, resultIntent);  // Gửi kết quả thành công về Activity A
+        }
+        finish();
+    }
+
 }

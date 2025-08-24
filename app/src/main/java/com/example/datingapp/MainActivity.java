@@ -1,25 +1,19 @@
 package com.example.datingapp;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Typeface;
-import android.os.Build; // ⭐ IMPORT này cần thiết ⭐
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity implements DatingFragment.OnBadgeUpdateListener {
@@ -34,16 +28,6 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
     private UserFragment userFragment;
     private Fragment activeFragment;
 
-    private BroadcastReceiver navigateToChatReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null && intent.getAction().equals(ProfileDetailActivity.ACTION_NAVIGATE_TO_CHAT)) {
-                Log.d(TAG, "Received broadcast to navigate to Chat tab.");
-                bottomNav.setSelectedItemId(R.id.nav_message);
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
 
         bottomNav = findViewById(R.id.bottomNavigation);
         bottomNav.setItemIconTintList(null);
-
         fragmentManager = getSupportFragmentManager();
 
         if (savedInstanceState == null) {
@@ -61,21 +44,19 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
             userFragment = new UserFragment();
 
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, homeFragment, HomeFragment.class.getSimpleName())
-                    .add(R.id.fragment_container, datingFragment, DatingFragment.class.getSimpleName())
-                    .add(R.id.fragment_container, matchFragment, MatchFragment.class.getSimpleName())
-                    .add(R.id.fragment_container, userFragment, UserFragment.class.getSimpleName())
-                    .hide(datingFragment)
-                    .hide(matchFragment)
-                    .hide(userFragment)
+                    .add(R.id.fragment_container, homeFragment, "HomeFragment")
+                    .add(R.id.fragment_container, datingFragment, "DatingFragment").hide(datingFragment)
+                    .add(R.id.fragment_container, matchFragment, "MatchFragment").hide(matchFragment)
+                    .add(R.id.fragment_container, userFragment, "UserFragment").hide(userFragment)
                     .show(homeFragment)
                     .commit();
+
             activeFragment = homeFragment;
         } else {
-            homeFragment = (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-            datingFragment = (DatingFragment) fragmentManager.findFragmentByTag(DatingFragment.class.getSimpleName());
-            matchFragment = (MatchFragment) fragmentManager.findFragmentByTag(MatchFragment.class.getSimpleName());
-            userFragment = (UserFragment) fragmentManager.findFragmentByTag(UserFragment.class.getSimpleName());
+            homeFragment = (HomeFragment) fragmentManager.findFragmentByTag("HomeFragment");
+            datingFragment = (DatingFragment) fragmentManager.findFragmentByTag("DatingFragment");
+            matchFragment = (MatchFragment) fragmentManager.findFragmentByTag("MatchFragment");
+            userFragment = (UserFragment) fragmentManager.findFragmentByTag("UserFragment");
 
             for (Fragment fragment : fragmentManager.getFragments()) {
                 if (fragment != null && fragment.isVisible()) {
@@ -89,79 +70,121 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
             }
         }
 
-        bottomNav.setSelectedItemId(R.id.nav_search);
+        updateDatingFragmentBadgeFromPrefs();
+
+        // Xử lý mở fragment cụ thể nếu được gửi từ notification
+        String openFragment = getIntent().getStringExtra("OPEN_FRAGMENT");
+        if ("MatchFragment".equals(openFragment)) {
+            bottomNav.setSelectedItemId(R.id.nav_message);
+            switchFragment(matchFragment);
+        } else if ("UserFragment".equals(openFragment)) {
+            bottomNav.setSelectedItemId(R.id.nav_profile);
+            switchFragment(userFragment);
+        } else {
+            bottomNav.setSelectedItemId(R.id.nav_search);
+            switchFragment(homeFragment);
+        }
 
         bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment selectedFragment = null;
                 int itemId = item.getItemId();
 
                 if (itemId == R.id.nav_search) {
-                    selectedFragment = homeFragment;
+                    switchFragment(homeFragment);
+                    return true;
                 } else if (itemId == R.id.nav_dating) {
-                    selectedFragment = datingFragment;
-                    BadgeDrawable badge = bottomNav.getBadge(item.getItemId());
-                    if (badge != null) {
-                        badge.setVisible(false);
-                        badge.clearNumber();
-                    }
+                    switchFragment(datingFragment);
+                    clearBadge(itemId);
+                    return true;
                 } else if (itemId == R.id.nav_message) {
-                    selectedFragment = matchFragment;
+                    switchFragment(matchFragment);
+                    return true;
                 } else if (itemId == R.id.nav_profile) {
-                    selectedFragment = userFragment;
-                }
-
-                if (selectedFragment != null && selectedFragment != activeFragment) {
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.hide(activeFragment);
-                    transaction.show(selectedFragment);
-                    transaction.commit();
-                    activeFragment = selectedFragment;
+                    switchFragment(userFragment);
                     return true;
                 }
                 return false;
             }
         });
 
-        updateDatingFragmentBadgeFromPrefs();
+        // Xử lý mở ChatActivity nếu cần
+        handleOpenChatIfNeeded(getIntent());
+
+        // Xử lý mở IncomingCallActivity nếu cần
+        handleOpenCallIfNeeded(getIntent());
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        IntentFilter filter = new IntentFilter(ProfileDetailActivity.ACTION_NAVIGATE_TO_CHAT);
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
 
-        // ⭐ THE FIX: Add RECEIVER_NOT_EXPORTED flag for Android 14+ ⭐
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) { // Android 14 (API 34) and higher
-            registerReceiver(navigateToChatReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
-        } else {
-            registerReceiver(navigateToChatReceiver, filter);
+        handleOpenChatIfNeeded(intent);
+        handleOpenCallIfNeeded(intent);
+    }
+
+    private void handleOpenChatIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra("OPEN_CHAT", false)) {
+            String matchId = intent.getStringExtra("matchId");
+            String matchName = intent.getStringExtra("matchName");
+            String matchAvatarUrl = intent.getStringExtra("matchAvatarUrl");
+            String chatId = intent.getStringExtra("chatId");
+
+            Intent chatIntent = new Intent(MainActivity.this, ChatActivity.class);
+            chatIntent.putExtra("matchId", matchId);
+            chatIntent.putExtra("matchName", matchName);
+            chatIntent.putExtra("matchAvatarUrl", matchAvatarUrl);
+            chatIntent.putExtra("chatId", chatId);
+            startActivity(chatIntent);
+
+            intent.removeExtra("OPEN_CHAT"); // tránh mở lại khi quay về
         }
-        Log.d(TAG, "BroadcastReceiver registered.");
-
-        // If you choose to use LocalBroadcastManager (recommended for in-app broadcasts)
-        // LocalBroadcastManager.getInstance(this).registerReceiver(navigateToChatReceiver, filter);
-        // Log.d(TAG, "LocalBroadcastManager receiver registered.");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // ⭐ Unregistering is generally the same, no special flags needed for unregister ⭐
-        unregisterReceiver(navigateToChatReceiver);
-        Log.d(TAG, "BroadcastReceiver unregistered.");
+    private void handleOpenCallIfNeeded(Intent intent) {
+        if (intent.getBooleanExtra("OPEN_CALL", false)) {
+            String callerId = intent.getStringExtra("callerId");
+            String callerName = intent.getStringExtra("callerName");
+            String callerAvatarUrl = intent.getStringExtra("callerAvatarUrl");
+            String channelName = intent.getStringExtra("channelName");
 
-        // If you choose to use LocalBroadcastManager
-        // LocalBroadcastManager.getInstance(this).unregisterReceiver(navigateToChatReceiver);
-        // Log.d(TAG, "LocalBroadcastManager receiver unregistered.");
+            Intent callIntent = new Intent(MainActivity.this, IncomingCallActivity.class);
+            callIntent.putExtra("callerId", callerId);
+            callIntent.putExtra("callerName", callerName);
+            callIntent.putExtra("callerAvatarUrl", callerAvatarUrl);
+            callIntent.putExtra("channelName", channelName);
+            startActivity(callIntent);
+
+            intent.removeExtra("OPEN_CALL"); // tránh mở lại khi quay về
+        }
+    }
+
+    private void switchFragment(Fragment fragment) {
+        if (fragment != activeFragment) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            if (activeFragment != null) {
+                transaction.hide(activeFragment);
+            }
+            transaction.show(fragment).commit();
+            activeFragment = fragment;
+        }
+    }
+
+    private void clearBadge(int itemId) {
+        BadgeDrawable badge = bottomNav.getBadge(itemId);
+        if (badge != null) {
+            badge.setVisible(false);
+            badge.clearNumber();
+            Log.d(TAG, "Badge for item " + itemId + " cleared.");
+        } else {
+            Log.d(TAG, "No badge found for item " + itemId + " to clear.");
+        }
     }
 
     @Override
     public void onUpdateBadge(int count) {
-        Log.d(TAG, "onUpdateBadge called with count: " + count);
         BadgeDrawable badge = bottomNav.getOrCreateBadge(R.id.nav_dating);
-
         if (count > 0) {
             badge.setVisible(true);
             badge.setNumber(count);
@@ -172,12 +195,8 @@ public class MainActivity extends AppCompatActivity implements DatingFragment.On
     }
 
     private void updateDatingFragmentBadgeFromPrefs() {
-        Context context = getApplicationContext();
-        if (context != null) {
-            int unreadCount = context.getSharedPreferences(DatingFragment.PREF_NAME, Context.MODE_PRIVATE)
-                    .getInt(DatingFragment.KEY_UNREAD_LIKES_COUNT, 0);
-            Log.d(TAG, "Unread likes count from SharedPreferences on startup: " + unreadCount);
-            onUpdateBadge(unreadCount);
-        }
+        int unreadCount = getSharedPreferences(DatingFragment.PREF_NAME, Context.MODE_PRIVATE)
+                .getInt(DatingFragment.KEY_UNREAD_LIKES_COUNT, 0);
+        onUpdateBadge(unreadCount);
     }
 }

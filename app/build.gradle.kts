@@ -50,6 +50,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -63,6 +64,7 @@ dependencies {
     // Image Loading - Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation(libs.activity)
+    implementation(libs.firebase.messaging)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.squareup.picasso:picasso:2.71828") // Phiên bản mới nhất
     implementation ("de.hdodenhof:circleimageview:3.1.0")
@@ -77,5 +79,11 @@ dependencies {
 
     // CardStackView - Đã chuyển sang phiên bản 2.3.0 phổ biến hơn
     implementation ("com.github.yuyakaido:CardStackView:v2.3.4")
+ 
+    //callvideo
+    implementation ("io.agora.rtc:full-sdk:4.1.1")
+    implementation ("com.android.volley:volley:1.2.1")
+    // Gradle
+    implementation(("com.google.firebase:firebase-messaging:24.1.2"))
 
 }

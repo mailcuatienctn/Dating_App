@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">DatingApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="token">007eJxTYIiq9GfWyGs5c+Hgz5sqE1cbmdu7rgi3K4t43T9ThuX9o00KDKaGiRZJxiZGZikGpibmRmaJKRamJqYWyammFsZGiSlpj5qzMxoCGRn4Dv5mYIRCEJ+JwdCIgQEA65QeMA==</string>
+    <string name="appId">51a8b3426d054726ad85458ce5832adf</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
