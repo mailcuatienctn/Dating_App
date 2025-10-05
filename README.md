@@ -61,9 +61,9 @@ cd DatingApp
 * Connect the Android app to Firebase
 * Enable:
 
-  * **Firebase Authentication** (Email/Phone)
+  * **Firebase Authentication**
   * **Cloud Firestore**
-  * **Firebase Storage**
+  * **Cloudinary**
   * **Firebase Cloud Messaging**
 
 ### 4. Run the app
