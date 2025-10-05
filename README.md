@@ -45,7 +45,7 @@ Here’s the full English version in one single block so you can copy it easily 
 ### 1. Clone the project
 
 ```bash
-git clone https://github.com/your-username/DatingApp.git
+git clone https://github.com/mailcuatienctn/DatingApp.git
 cd DatingApp
 ```
 
